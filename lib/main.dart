@@ -11,16 +11,21 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => DeckProvider(database: database),
-      child: const FlashcardsApp(),
+      child: const KiokuApp(),
     ),
   );
 }
 
-class FlashcardsApp extends StatelessWidget {
-  const FlashcardsApp({super.key});
+class KiokuApp extends StatelessWidget {
+  const KiokuApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomeScreen());
+    return MaterialApp(
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+      home: HomeScreen(),
+    );
   }
 }

@@ -14,10 +14,7 @@ class DeckView extends StatelessWidget {
     final deckProvider = context.watch<DeckProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Flashcards"),
-        backgroundColor: Colors.red,
-      ),
+      appBar: AppBar(title: const Text("Kioku"), backgroundColor: Colors.red),
 
       // DISPLAY DATA
       body: ListView.builder(
