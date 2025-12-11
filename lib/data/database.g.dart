@@ -1125,12 +1125,608 @@ class ReviewsCompanion extends UpdateCompanion<Review> {
   }
 }
 
+class $UserProgressTable extends UserProgress
+    with TableInfo<$UserProgressTable, UserProgressData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserProgressTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _currencyMeta = const VerificationMeta(
+    'currency',
+  );
+  @override
+  late final GeneratedColumn<int> currency = GeneratedColumn<int>(
+    'currency',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _lastResetDateMeta = const VerificationMeta(
+    'lastResetDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastResetDate =
+      GeneratedColumn<DateTime>(
+        'last_reset_date',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _loginQuestDoneMeta = const VerificationMeta(
+    'loginQuestDone',
+  );
+  @override
+  late final GeneratedColumn<bool> loginQuestDone = GeneratedColumn<bool>(
+    'login_quest_done',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("login_quest_done" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _loginQuestClaimedMeta = const VerificationMeta(
+    'loginQuestClaimed',
+  );
+  @override
+  late final GeneratedColumn<bool> loginQuestClaimed = GeneratedColumn<bool>(
+    'login_quest_claimed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("login_quest_claimed" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _learnQuestDoneMeta = const VerificationMeta(
+    'learnQuestDone',
+  );
+  @override
+  late final GeneratedColumn<bool> learnQuestDone = GeneratedColumn<bool>(
+    'learn_quest_done',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("learn_quest_done" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _learnQuestClaimedMeta = const VerificationMeta(
+    'learnQuestClaimed',
+  );
+  @override
+  late final GeneratedColumn<bool> learnQuestClaimed = GeneratedColumn<bool>(
+    'learn_quest_claimed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("learn_quest_claimed" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _reviewQuestDoneMeta = const VerificationMeta(
+    'reviewQuestDone',
+  );
+  @override
+  late final GeneratedColumn<bool> reviewQuestDone = GeneratedColumn<bool>(
+    'review_quest_done',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("review_quest_done" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _reviewQuestClaimedMeta =
+      const VerificationMeta('reviewQuestClaimed');
+  @override
+  late final GeneratedColumn<bool> reviewQuestClaimed = GeneratedColumn<bool>(
+    'review_quest_claimed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("review_quest_claimed" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    currency,
+    lastResetDate,
+    loginQuestDone,
+    loginQuestClaimed,
+    learnQuestDone,
+    learnQuestClaimed,
+    reviewQuestDone,
+    reviewQuestClaimed,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_progress';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UserProgressData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('currency')) {
+      context.handle(
+        _currencyMeta,
+        currency.isAcceptableOrUnknown(data['currency']!, _currencyMeta),
+      );
+    }
+    if (data.containsKey('last_reset_date')) {
+      context.handle(
+        _lastResetDateMeta,
+        lastResetDate.isAcceptableOrUnknown(
+          data['last_reset_date']!,
+          _lastResetDateMeta,
+        ),
+      );
+    }
+    if (data.containsKey('login_quest_done')) {
+      context.handle(
+        _loginQuestDoneMeta,
+        loginQuestDone.isAcceptableOrUnknown(
+          data['login_quest_done']!,
+          _loginQuestDoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('login_quest_claimed')) {
+      context.handle(
+        _loginQuestClaimedMeta,
+        loginQuestClaimed.isAcceptableOrUnknown(
+          data['login_quest_claimed']!,
+          _loginQuestClaimedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('learn_quest_done')) {
+      context.handle(
+        _learnQuestDoneMeta,
+        learnQuestDone.isAcceptableOrUnknown(
+          data['learn_quest_done']!,
+          _learnQuestDoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('learn_quest_claimed')) {
+      context.handle(
+        _learnQuestClaimedMeta,
+        learnQuestClaimed.isAcceptableOrUnknown(
+          data['learn_quest_claimed']!,
+          _learnQuestClaimedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('review_quest_done')) {
+      context.handle(
+        _reviewQuestDoneMeta,
+        reviewQuestDone.isAcceptableOrUnknown(
+          data['review_quest_done']!,
+          _reviewQuestDoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('review_quest_claimed')) {
+      context.handle(
+        _reviewQuestClaimedMeta,
+        reviewQuestClaimed.isAcceptableOrUnknown(
+          data['review_quest_claimed']!,
+          _reviewQuestClaimedMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UserProgressData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserProgressData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      currency: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}currency'],
+      )!,
+      lastResetDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_reset_date'],
+      ),
+      loginQuestDone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}login_quest_done'],
+      )!,
+      loginQuestClaimed: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}login_quest_claimed'],
+      )!,
+      learnQuestDone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}learn_quest_done'],
+      )!,
+      learnQuestClaimed: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}learn_quest_claimed'],
+      )!,
+      reviewQuestDone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}review_quest_done'],
+      )!,
+      reviewQuestClaimed: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}review_quest_claimed'],
+      )!,
+    );
+  }
+
+  @override
+  $UserProgressTable createAlias(String alias) {
+    return $UserProgressTable(attachedDatabase, alias);
+  }
+}
+
+class UserProgressData extends DataClass
+    implements Insertable<UserProgressData> {
+  final int id;
+  final int currency;
+  final DateTime? lastResetDate;
+  final bool loginQuestDone;
+  final bool loginQuestClaimed;
+  final bool learnQuestDone;
+  final bool learnQuestClaimed;
+  final bool reviewQuestDone;
+  final bool reviewQuestClaimed;
+  const UserProgressData({
+    required this.id,
+    required this.currency,
+    this.lastResetDate,
+    required this.loginQuestDone,
+    required this.loginQuestClaimed,
+    required this.learnQuestDone,
+    required this.learnQuestClaimed,
+    required this.reviewQuestDone,
+    required this.reviewQuestClaimed,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['currency'] = Variable<int>(currency);
+    if (!nullToAbsent || lastResetDate != null) {
+      map['last_reset_date'] = Variable<DateTime>(lastResetDate);
+    }
+    map['login_quest_done'] = Variable<bool>(loginQuestDone);
+    map['login_quest_claimed'] = Variable<bool>(loginQuestClaimed);
+    map['learn_quest_done'] = Variable<bool>(learnQuestDone);
+    map['learn_quest_claimed'] = Variable<bool>(learnQuestClaimed);
+    map['review_quest_done'] = Variable<bool>(reviewQuestDone);
+    map['review_quest_claimed'] = Variable<bool>(reviewQuestClaimed);
+    return map;
+  }
+
+  UserProgressCompanion toCompanion(bool nullToAbsent) {
+    return UserProgressCompanion(
+      id: Value(id),
+      currency: Value(currency),
+      lastResetDate: lastResetDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastResetDate),
+      loginQuestDone: Value(loginQuestDone),
+      loginQuestClaimed: Value(loginQuestClaimed),
+      learnQuestDone: Value(learnQuestDone),
+      learnQuestClaimed: Value(learnQuestClaimed),
+      reviewQuestDone: Value(reviewQuestDone),
+      reviewQuestClaimed: Value(reviewQuestClaimed),
+    );
+  }
+
+  factory UserProgressData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserProgressData(
+      id: serializer.fromJson<int>(json['id']),
+      currency: serializer.fromJson<int>(json['currency']),
+      lastResetDate: serializer.fromJson<DateTime?>(json['lastResetDate']),
+      loginQuestDone: serializer.fromJson<bool>(json['loginQuestDone']),
+      loginQuestClaimed: serializer.fromJson<bool>(json['loginQuestClaimed']),
+      learnQuestDone: serializer.fromJson<bool>(json['learnQuestDone']),
+      learnQuestClaimed: serializer.fromJson<bool>(json['learnQuestClaimed']),
+      reviewQuestDone: serializer.fromJson<bool>(json['reviewQuestDone']),
+      reviewQuestClaimed: serializer.fromJson<bool>(json['reviewQuestClaimed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'currency': serializer.toJson<int>(currency),
+      'lastResetDate': serializer.toJson<DateTime?>(lastResetDate),
+      'loginQuestDone': serializer.toJson<bool>(loginQuestDone),
+      'loginQuestClaimed': serializer.toJson<bool>(loginQuestClaimed),
+      'learnQuestDone': serializer.toJson<bool>(learnQuestDone),
+      'learnQuestClaimed': serializer.toJson<bool>(learnQuestClaimed),
+      'reviewQuestDone': serializer.toJson<bool>(reviewQuestDone),
+      'reviewQuestClaimed': serializer.toJson<bool>(reviewQuestClaimed),
+    };
+  }
+
+  UserProgressData copyWith({
+    int? id,
+    int? currency,
+    Value<DateTime?> lastResetDate = const Value.absent(),
+    bool? loginQuestDone,
+    bool? loginQuestClaimed,
+    bool? learnQuestDone,
+    bool? learnQuestClaimed,
+    bool? reviewQuestDone,
+    bool? reviewQuestClaimed,
+  }) => UserProgressData(
+    id: id ?? this.id,
+    currency: currency ?? this.currency,
+    lastResetDate: lastResetDate.present
+        ? lastResetDate.value
+        : this.lastResetDate,
+    loginQuestDone: loginQuestDone ?? this.loginQuestDone,
+    loginQuestClaimed: loginQuestClaimed ?? this.loginQuestClaimed,
+    learnQuestDone: learnQuestDone ?? this.learnQuestDone,
+    learnQuestClaimed: learnQuestClaimed ?? this.learnQuestClaimed,
+    reviewQuestDone: reviewQuestDone ?? this.reviewQuestDone,
+    reviewQuestClaimed: reviewQuestClaimed ?? this.reviewQuestClaimed,
+  );
+  UserProgressData copyWithCompanion(UserProgressCompanion data) {
+    return UserProgressData(
+      id: data.id.present ? data.id.value : this.id,
+      currency: data.currency.present ? data.currency.value : this.currency,
+      lastResetDate: data.lastResetDate.present
+          ? data.lastResetDate.value
+          : this.lastResetDate,
+      loginQuestDone: data.loginQuestDone.present
+          ? data.loginQuestDone.value
+          : this.loginQuestDone,
+      loginQuestClaimed: data.loginQuestClaimed.present
+          ? data.loginQuestClaimed.value
+          : this.loginQuestClaimed,
+      learnQuestDone: data.learnQuestDone.present
+          ? data.learnQuestDone.value
+          : this.learnQuestDone,
+      learnQuestClaimed: data.learnQuestClaimed.present
+          ? data.learnQuestClaimed.value
+          : this.learnQuestClaimed,
+      reviewQuestDone: data.reviewQuestDone.present
+          ? data.reviewQuestDone.value
+          : this.reviewQuestDone,
+      reviewQuestClaimed: data.reviewQuestClaimed.present
+          ? data.reviewQuestClaimed.value
+          : this.reviewQuestClaimed,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserProgressData(')
+          ..write('id: $id, ')
+          ..write('currency: $currency, ')
+          ..write('lastResetDate: $lastResetDate, ')
+          ..write('loginQuestDone: $loginQuestDone, ')
+          ..write('loginQuestClaimed: $loginQuestClaimed, ')
+          ..write('learnQuestDone: $learnQuestDone, ')
+          ..write('learnQuestClaimed: $learnQuestClaimed, ')
+          ..write('reviewQuestDone: $reviewQuestDone, ')
+          ..write('reviewQuestClaimed: $reviewQuestClaimed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    currency,
+    lastResetDate,
+    loginQuestDone,
+    loginQuestClaimed,
+    learnQuestDone,
+    learnQuestClaimed,
+    reviewQuestDone,
+    reviewQuestClaimed,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserProgressData &&
+          other.id == this.id &&
+          other.currency == this.currency &&
+          other.lastResetDate == this.lastResetDate &&
+          other.loginQuestDone == this.loginQuestDone &&
+          other.loginQuestClaimed == this.loginQuestClaimed &&
+          other.learnQuestDone == this.learnQuestDone &&
+          other.learnQuestClaimed == this.learnQuestClaimed &&
+          other.reviewQuestDone == this.reviewQuestDone &&
+          other.reviewQuestClaimed == this.reviewQuestClaimed);
+}
+
+class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
+  final Value<int> id;
+  final Value<int> currency;
+  final Value<DateTime?> lastResetDate;
+  final Value<bool> loginQuestDone;
+  final Value<bool> loginQuestClaimed;
+  final Value<bool> learnQuestDone;
+  final Value<bool> learnQuestClaimed;
+  final Value<bool> reviewQuestDone;
+  final Value<bool> reviewQuestClaimed;
+  const UserProgressCompanion({
+    this.id = const Value.absent(),
+    this.currency = const Value.absent(),
+    this.lastResetDate = const Value.absent(),
+    this.loginQuestDone = const Value.absent(),
+    this.loginQuestClaimed = const Value.absent(),
+    this.learnQuestDone = const Value.absent(),
+    this.learnQuestClaimed = const Value.absent(),
+    this.reviewQuestDone = const Value.absent(),
+    this.reviewQuestClaimed = const Value.absent(),
+  });
+  UserProgressCompanion.insert({
+    this.id = const Value.absent(),
+    this.currency = const Value.absent(),
+    this.lastResetDate = const Value.absent(),
+    this.loginQuestDone = const Value.absent(),
+    this.loginQuestClaimed = const Value.absent(),
+    this.learnQuestDone = const Value.absent(),
+    this.learnQuestClaimed = const Value.absent(),
+    this.reviewQuestDone = const Value.absent(),
+    this.reviewQuestClaimed = const Value.absent(),
+  });
+  static Insertable<UserProgressData> custom({
+    Expression<int>? id,
+    Expression<int>? currency,
+    Expression<DateTime>? lastResetDate,
+    Expression<bool>? loginQuestDone,
+    Expression<bool>? loginQuestClaimed,
+    Expression<bool>? learnQuestDone,
+    Expression<bool>? learnQuestClaimed,
+    Expression<bool>? reviewQuestDone,
+    Expression<bool>? reviewQuestClaimed,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (currency != null) 'currency': currency,
+      if (lastResetDate != null) 'last_reset_date': lastResetDate,
+      if (loginQuestDone != null) 'login_quest_done': loginQuestDone,
+      if (loginQuestClaimed != null) 'login_quest_claimed': loginQuestClaimed,
+      if (learnQuestDone != null) 'learn_quest_done': learnQuestDone,
+      if (learnQuestClaimed != null) 'learn_quest_claimed': learnQuestClaimed,
+      if (reviewQuestDone != null) 'review_quest_done': reviewQuestDone,
+      if (reviewQuestClaimed != null)
+        'review_quest_claimed': reviewQuestClaimed,
+    });
+  }
+
+  UserProgressCompanion copyWith({
+    Value<int>? id,
+    Value<int>? currency,
+    Value<DateTime?>? lastResetDate,
+    Value<bool>? loginQuestDone,
+    Value<bool>? loginQuestClaimed,
+    Value<bool>? learnQuestDone,
+    Value<bool>? learnQuestClaimed,
+    Value<bool>? reviewQuestDone,
+    Value<bool>? reviewQuestClaimed,
+  }) {
+    return UserProgressCompanion(
+      id: id ?? this.id,
+      currency: currency ?? this.currency,
+      lastResetDate: lastResetDate ?? this.lastResetDate,
+      loginQuestDone: loginQuestDone ?? this.loginQuestDone,
+      loginQuestClaimed: loginQuestClaimed ?? this.loginQuestClaimed,
+      learnQuestDone: learnQuestDone ?? this.learnQuestDone,
+      learnQuestClaimed: learnQuestClaimed ?? this.learnQuestClaimed,
+      reviewQuestDone: reviewQuestDone ?? this.reviewQuestDone,
+      reviewQuestClaimed: reviewQuestClaimed ?? this.reviewQuestClaimed,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (currency.present) {
+      map['currency'] = Variable<int>(currency.value);
+    }
+    if (lastResetDate.present) {
+      map['last_reset_date'] = Variable<DateTime>(lastResetDate.value);
+    }
+    if (loginQuestDone.present) {
+      map['login_quest_done'] = Variable<bool>(loginQuestDone.value);
+    }
+    if (loginQuestClaimed.present) {
+      map['login_quest_claimed'] = Variable<bool>(loginQuestClaimed.value);
+    }
+    if (learnQuestDone.present) {
+      map['learn_quest_done'] = Variable<bool>(learnQuestDone.value);
+    }
+    if (learnQuestClaimed.present) {
+      map['learn_quest_claimed'] = Variable<bool>(learnQuestClaimed.value);
+    }
+    if (reviewQuestDone.present) {
+      map['review_quest_done'] = Variable<bool>(reviewQuestDone.value);
+    }
+    if (reviewQuestClaimed.present) {
+      map['review_quest_claimed'] = Variable<bool>(reviewQuestClaimed.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserProgressCompanion(')
+          ..write('id: $id, ')
+          ..write('currency: $currency, ')
+          ..write('lastResetDate: $lastResetDate, ')
+          ..write('loginQuestDone: $loginQuestDone, ')
+          ..write('loginQuestClaimed: $loginQuestClaimed, ')
+          ..write('learnQuestDone: $learnQuestDone, ')
+          ..write('learnQuestClaimed: $learnQuestClaimed, ')
+          ..write('reviewQuestDone: $reviewQuestDone, ')
+          ..write('reviewQuestClaimed: $reviewQuestClaimed')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $DecksTable decks = $DecksTable(this);
   late final $FlashcardsTable flashcards = $FlashcardsTable(this);
   late final $ReviewsTable reviews = $ReviewsTable(this);
+  late final $UserProgressTable userProgress = $UserProgressTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1139,6 +1735,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     decks,
     flashcards,
     reviews,
+    userProgress,
   ];
 }
 
@@ -2167,6 +2764,290 @@ typedef $$ReviewsTableProcessedTableManager =
       Review,
       PrefetchHooks Function({bool cardId})
     >;
+typedef $$UserProgressTableCreateCompanionBuilder =
+    UserProgressCompanion Function({
+      Value<int> id,
+      Value<int> currency,
+      Value<DateTime?> lastResetDate,
+      Value<bool> loginQuestDone,
+      Value<bool> loginQuestClaimed,
+      Value<bool> learnQuestDone,
+      Value<bool> learnQuestClaimed,
+      Value<bool> reviewQuestDone,
+      Value<bool> reviewQuestClaimed,
+    });
+typedef $$UserProgressTableUpdateCompanionBuilder =
+    UserProgressCompanion Function({
+      Value<int> id,
+      Value<int> currency,
+      Value<DateTime?> lastResetDate,
+      Value<bool> loginQuestDone,
+      Value<bool> loginQuestClaimed,
+      Value<bool> learnQuestDone,
+      Value<bool> learnQuestClaimed,
+      Value<bool> reviewQuestDone,
+      Value<bool> reviewQuestClaimed,
+    });
+
+class $$UserProgressTableFilterComposer
+    extends Composer<_$AppDatabase, $UserProgressTable> {
+  $$UserProgressTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastResetDate => $composableBuilder(
+    column: $table.lastResetDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get loginQuestDone => $composableBuilder(
+    column: $table.loginQuestDone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get loginQuestClaimed => $composableBuilder(
+    column: $table.loginQuestClaimed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get learnQuestDone => $composableBuilder(
+    column: $table.learnQuestDone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get learnQuestClaimed => $composableBuilder(
+    column: $table.learnQuestClaimed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get reviewQuestDone => $composableBuilder(
+    column: $table.reviewQuestDone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get reviewQuestClaimed => $composableBuilder(
+    column: $table.reviewQuestClaimed,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$UserProgressTableOrderingComposer
+    extends Composer<_$AppDatabase, $UserProgressTable> {
+  $$UserProgressTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get lastResetDate => $composableBuilder(
+    column: $table.lastResetDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get loginQuestDone => $composableBuilder(
+    column: $table.loginQuestDone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get loginQuestClaimed => $composableBuilder(
+    column: $table.loginQuestClaimed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get learnQuestDone => $composableBuilder(
+    column: $table.learnQuestDone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get learnQuestClaimed => $composableBuilder(
+    column: $table.learnQuestClaimed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get reviewQuestDone => $composableBuilder(
+    column: $table.reviewQuestDone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get reviewQuestClaimed => $composableBuilder(
+    column: $table.reviewQuestClaimed,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$UserProgressTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UserProgressTable> {
+  $$UserProgressTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get currency =>
+      $composableBuilder(column: $table.currency, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastResetDate => $composableBuilder(
+    column: $table.lastResetDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get loginQuestDone => $composableBuilder(
+    column: $table.loginQuestDone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get loginQuestClaimed => $composableBuilder(
+    column: $table.loginQuestClaimed,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get learnQuestDone => $composableBuilder(
+    column: $table.learnQuestDone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get learnQuestClaimed => $composableBuilder(
+    column: $table.learnQuestClaimed,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get reviewQuestDone => $composableBuilder(
+    column: $table.reviewQuestDone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get reviewQuestClaimed => $composableBuilder(
+    column: $table.reviewQuestClaimed,
+    builder: (column) => column,
+  );
+}
+
+class $$UserProgressTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UserProgressTable,
+          UserProgressData,
+          $$UserProgressTableFilterComposer,
+          $$UserProgressTableOrderingComposer,
+          $$UserProgressTableAnnotationComposer,
+          $$UserProgressTableCreateCompanionBuilder,
+          $$UserProgressTableUpdateCompanionBuilder,
+          (
+            UserProgressData,
+            BaseReferences<_$AppDatabase, $UserProgressTable, UserProgressData>,
+          ),
+          UserProgressData,
+          PrefetchHooks Function()
+        > {
+  $$UserProgressTableTableManager(_$AppDatabase db, $UserProgressTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserProgressTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserProgressTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserProgressTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> currency = const Value.absent(),
+                Value<DateTime?> lastResetDate = const Value.absent(),
+                Value<bool> loginQuestDone = const Value.absent(),
+                Value<bool> loginQuestClaimed = const Value.absent(),
+                Value<bool> learnQuestDone = const Value.absent(),
+                Value<bool> learnQuestClaimed = const Value.absent(),
+                Value<bool> reviewQuestDone = const Value.absent(),
+                Value<bool> reviewQuestClaimed = const Value.absent(),
+              }) => UserProgressCompanion(
+                id: id,
+                currency: currency,
+                lastResetDate: lastResetDate,
+                loginQuestDone: loginQuestDone,
+                loginQuestClaimed: loginQuestClaimed,
+                learnQuestDone: learnQuestDone,
+                learnQuestClaimed: learnQuestClaimed,
+                reviewQuestDone: reviewQuestDone,
+                reviewQuestClaimed: reviewQuestClaimed,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> currency = const Value.absent(),
+                Value<DateTime?> lastResetDate = const Value.absent(),
+                Value<bool> loginQuestDone = const Value.absent(),
+                Value<bool> loginQuestClaimed = const Value.absent(),
+                Value<bool> learnQuestDone = const Value.absent(),
+                Value<bool> learnQuestClaimed = const Value.absent(),
+                Value<bool> reviewQuestDone = const Value.absent(),
+                Value<bool> reviewQuestClaimed = const Value.absent(),
+              }) => UserProgressCompanion.insert(
+                id: id,
+                currency: currency,
+                lastResetDate: lastResetDate,
+                loginQuestDone: loginQuestDone,
+                loginQuestClaimed: loginQuestClaimed,
+                learnQuestDone: learnQuestDone,
+                learnQuestClaimed: learnQuestClaimed,
+                reviewQuestDone: reviewQuestDone,
+                reviewQuestClaimed: reviewQuestClaimed,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$UserProgressTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UserProgressTable,
+      UserProgressData,
+      $$UserProgressTableFilterComposer,
+      $$UserProgressTableOrderingComposer,
+      $$UserProgressTableAnnotationComposer,
+      $$UserProgressTableCreateCompanionBuilder,
+      $$UserProgressTableUpdateCompanionBuilder,
+      (
+        UserProgressData,
+        BaseReferences<_$AppDatabase, $UserProgressTable, UserProgressData>,
+      ),
+      UserProgressData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2177,4 +3058,6 @@ class $AppDatabaseManager {
       $$FlashcardsTableTableManager(_db, _db.flashcards);
   $$ReviewsTableTableManager get reviews =>
       $$ReviewsTableTableManager(_db, _db.reviews);
+  $$UserProgressTableTableManager get userProgress =>
+      $$UserProgressTableTableManager(_db, _db.userProgress);
 }

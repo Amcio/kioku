@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import '../data/deck_provider.dart';
 
 class CardEditor extends StatefulWidget {
-  const CardEditor({super.key});
+  final int deckId;
+
+  const CardEditor({super.key, required this.deckId});
 
   @override
   State<CardEditor> createState() => _CardEditorState();
@@ -27,7 +29,7 @@ class _CardEditorState extends State<CardEditor> {
       final frontText = _frontController.text;
       final backText = _backController.text;
 
-      context.read<DeckProvider>().addCardFromString(0, frontText, backText);
+      context.read<DeckProvider>().addCardFromString(widget.deckId, frontText, backText);
 
       Navigator.of(context).pop();
     }

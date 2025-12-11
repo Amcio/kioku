@@ -8,13 +8,10 @@ import '../adapter/fsrs_adapter.dart';
 import '../data/database.dart';
 
 class DeckProvider extends ChangeNotifier {
-  // TODO: (Optional) Look into DAOs (Data Access Objects) for Drift to separate database logic further.
-  // TODO: (Not Optional) _cards should hold cards for the current deck. NOT ALL CARDS.
   final AppDatabase database;
-  // 1. THE DATA (State)
   List<Deck> _decks = [];
   List<Flashcard> _cards = [];
-  // Getter to prevent direct modification from outside
+  
   List<Deck> get decks => _decks;
   List<Flashcard> get cards => _cards;
 
@@ -26,14 +23,12 @@ class DeckProvider extends ChangeNotifier {
   }
 
   void _initWatcher() {
-    _cardsSubscription = database.watchAllFlashcards().listen((
-      flashcardDataList,
-    ) {
-      _cards = flashcardDataList;
+    _cardsSubscription = database.watchAllFlashcards().listen((data) {
+      _cards = data;
       notifyListeners();
     });
-    _decksSubscription = database.watchAllDecks().listen((deckDataList) {
-      _decks = deckDataList;
+    _decksSubscription = database.watchAllDecks().listen((data) {
+      _decks = data;
       notifyListeners();
     });
   }
@@ -45,7 +40,6 @@ class DeckProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  // 2. THE LOGIC (Methods)
   Future<void> addCard(FlashcardsCompanion newCard) async {
     await database.into(database.flashcards).insert(newCard);
   }
@@ -54,44 +48,28 @@ class DeckProvider extends ChangeNotifier {
     int deckId,
     String front, [
     String back = '',
-    fsrs.State state = fsrs.State.learning, // Default as in fsrs lib
   ]) async {
-    // An automatically generated Companion class that omits required values in the constructor (like id) and provides some boilerplate methods.
-    // Rest of the fields will be filled in on first review.
-    // nextReviewDate is set to now so we can get cards for review by checking WHERE due < now()
+    // FIX: Use State 1 (Learning) to avoid "Invalid state value: 0" error.
+    // We set 'nextReviewDate' to NOW so it appears immediately in the due queue.
     final companion = FlashcardsCompanion.insert(
       deckId: deckId,
       front: front,
       back: back,
-      state: state.value,
-      nextReviewDate: Value(DateTime.now()),
+      state: 1, // fsrs.State.learning
+      nextReviewDate: Value(DateTime.now()), 
     );
     await addCard(companion);
   }
 
   Future<void> deleteCard(int id) async {
-    await (database.delete(
-      database.flashcards,
-    )..where((f) => f.id.equals(id))).go();
+    await (database.delete(database.flashcards)..where((f) => f.id.equals(id)))
+        .go();
   }
 
   Future<void> createDeck(String name) async {
     await database
         .into(database.decks)
         .insert(DecksCompanion.insert(name: name));
-  }
-
-  void getCardsForDeck(int deckId) {
-    return;
-    // TODO: This should start a subscription like the ones above in this class
-    // Maybe rename function?
-    /*
-      _cardsSubscription = database.watchFlashcardsInDeck(deckId)
-      .listen((data) {
-        _activeCards = data;
-        notifyListeners();
-      });
-    */
   }
 
   Future<void> processReview(Flashcard dbRow, fsrs.Rating rating) async {
@@ -105,5 +83,32 @@ class DeckProvider extends ChangeNotifier {
 
     await (database.update(database.flashcards).replace(updatedDbRow));
     await (database.into(database.reviews).insert(review));
+  }
+
+  // UPDATED SESSION LOGIC
+  Future<List<Flashcard>> getSessionCards(
+    int deckId, {
+    int limit = 50, // Total session limit
+  }) async {
+    final now = DateTime.now();
+
+    // Fetch ALL cards that are due right now (or in the past)
+    // This includes "New" cards (which we set to due=now) and Review cards.
+    final dueCards = await (database.select(database.flashcards)
+          ..where((tbl) => tbl.deckId.equals(deckId))
+          ..where((tbl) => tbl.nextReviewDate.isSmallerOrEqualValue(now)) // CHECK DUE DATE
+          ..orderBy([
+            // Prioritize most overdue cards first
+            (t) => OrderingTerm(expression: t.nextReviewDate, mode: OrderingMode.asc)
+          ])
+          ..limit(limit))
+        .get();
+
+    // Shuffle only for the user experience, so they don't guess based on order
+    // But we already filtered to ensure everything here IS actually due.
+    List<Flashcard> sessionQueue = [...dueCards];
+    sessionQueue.shuffle();
+
+    return sessionQueue;
   }
 }

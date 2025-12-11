@@ -3,18 +3,22 @@ import 'package:provider/provider.dart';
 
 import 'data/database.dart';
 import 'data/deck_provider.dart';
+import 'data/quest_provider.dart';
 import 'ui/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // makes sure plugins are initialized
   final database = AppDatabase();
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => DeckProvider(database: database),
-      child: const KiokuApp(),
-    ),
-  );
-}
+  MultiProvider( // Change to MultiProvider
+        providers: [
+          ChangeNotifierProvider(create: (_) => DeckProvider(database: database)),
+          ChangeNotifierProvider(create: (_) => QuestProvider(database: database)),
+        ],
+        child: const KiokuApp(),
+      ),
+    );
+  }
 
 class KiokuApp extends StatelessWidget {
   const KiokuApp({super.key});

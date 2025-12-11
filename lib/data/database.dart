@@ -5,15 +5,31 @@ import 'package:path_provider/path_provider.dart';
 import 'flashcard.dart';
 import 'decks.dart';
 import 'review_log.dart';
+import 'user_progress.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [Flashcards, Decks, Reviews])
+@DriftDatabase(tables: [Flashcards, Decks, Reviews, UserProgress])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from < 2) {
+          // Add the new table for existing users
+          await m.createTable(userProgress);
+        }
+      },
+    );
+  }
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
@@ -47,5 +63,8 @@ class AppDatabase extends _$AppDatabase {
 
   Stream<List<Deck>> watchAllDecks() {
     return select(decks).watch();
+  }
+  Stream<UserProgressData?> watchUserProgress() {
+    return select(userProgress).watchSingleOrNull();
   }
 }
