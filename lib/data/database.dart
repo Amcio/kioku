@@ -14,7 +14,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration {
@@ -26,6 +26,23 @@ class AppDatabase extends _$AppDatabase {
         if (from < 2) {
           // Add the new table for existing users
           await m.createTable(userProgress);
+        }
+        if (from < 3) {
+          // Add new columns for the shop
+          await m.addColumn(userProgress, userProgress.unlockedGreen);
+          await m.addColumn(userProgress, userProgress.unlockedBlue);
+          await m.addColumn(userProgress, userProgress.unlockedYellow);
+          await m.addColumn(userProgress, userProgress.unlockedPink);
+          await m.addColumn(userProgress, userProgress.unlockedOrange);
+          await m.addColumn(userProgress, userProgress.unlockedPurple);
+        }
+        if (from < 4) {
+          // Add allDailyQuests columns
+          await m.addColumn(userProgress, userProgress.allDailyQuestsDone);
+          await m.addColumn(userProgress, userProgress.allDailyQuestsClaimed);
+        }
+        if (from < 5) {
+          await m.addColumn(userProgress, userProgress.cardsLearnedToday);
         }
       },
     );
@@ -67,4 +84,13 @@ class AppDatabase extends _$AppDatabase {
   Stream<UserProgressData?> watchUserProgress() {
     return select(userProgress).watchSingleOrNull();
   }
+
+  // DEBUG clear database
+  Future<void> clearAllData() async {
+    await delete(reviews).go();
+    await delete(flashcards).go();
+    await delete(decks).go();
+    await delete(userProgress).go();
+  }
 }
+

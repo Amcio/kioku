@@ -28,7 +28,6 @@ class _StudyScreenState extends State<StudyScreen>
   bool _isLoading = true;
   int _currentIndex = 0;
   late int totalCards = 0;
-  int _newCardsLearned = 0;
 
   @override
   void initState() {
@@ -153,10 +152,7 @@ class _StudyScreenState extends State<StudyScreen>
       onPressed: () {
         // FIX: Check lastReviewDate instead of state to find "New" cards
         if (card.lastReviewDate == null) {
-          _newCardsLearned++;
-          if (_newCardsLearned >= 5) {
-            context.read<QuestProvider>().completeLearnQuest();
-          }
+          context.read<QuestProvider>().incrementLearnedCards();
         }
 
         context.read<DeckProvider>().processReview(card, rating);

@@ -1228,6 +1228,18 @@ class $UserProgressTable extends UserProgress
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _cardsLearnedTodayMeta = const VerificationMeta(
+    'cardsLearnedToday',
+  );
+  @override
+  late final GeneratedColumn<int> cardsLearnedToday = GeneratedColumn<int>(
+    'cards_learned_today',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   static const VerificationMeta _reviewQuestDoneMeta = const VerificationMeta(
     'reviewQuestDone',
   );
@@ -1257,6 +1269,125 @@ class $UserProgressTable extends UserProgress
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _allDailyQuestsDoneMeta =
+      const VerificationMeta('allDailyQuestsDone');
+  @override
+  late final GeneratedColumn<bool> allDailyQuestsDone = GeneratedColumn<bool>(
+    'all_daily_quests_done',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("all_daily_quests_done" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _allDailyQuestsClaimedMeta =
+      const VerificationMeta('allDailyQuestsClaimed');
+  @override
+  late final GeneratedColumn<bool> allDailyQuestsClaimed =
+      GeneratedColumn<bool>(
+        'all_daily_quests_claimed',
+        aliasedName,
+        false,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("all_daily_quests_claimed" IN (0, 1))',
+        ),
+        defaultValue: const Constant(false),
+      );
+  static const VerificationMeta _unlockedGreenMeta = const VerificationMeta(
+    'unlockedGreen',
+  );
+  @override
+  late final GeneratedColumn<bool> unlockedGreen = GeneratedColumn<bool>(
+    'unlocked_green',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("unlocked_green" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _unlockedBlueMeta = const VerificationMeta(
+    'unlockedBlue',
+  );
+  @override
+  late final GeneratedColumn<bool> unlockedBlue = GeneratedColumn<bool>(
+    'unlocked_blue',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("unlocked_blue" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _unlockedYellowMeta = const VerificationMeta(
+    'unlockedYellow',
+  );
+  @override
+  late final GeneratedColumn<bool> unlockedYellow = GeneratedColumn<bool>(
+    'unlocked_yellow',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("unlocked_yellow" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _unlockedPinkMeta = const VerificationMeta(
+    'unlockedPink',
+  );
+  @override
+  late final GeneratedColumn<bool> unlockedPink = GeneratedColumn<bool>(
+    'unlocked_pink',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("unlocked_pink" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _unlockedOrangeMeta = const VerificationMeta(
+    'unlockedOrange',
+  );
+  @override
+  late final GeneratedColumn<bool> unlockedOrange = GeneratedColumn<bool>(
+    'unlocked_orange',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("unlocked_orange" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _unlockedPurpleMeta = const VerificationMeta(
+    'unlockedPurple',
+  );
+  @override
+  late final GeneratedColumn<bool> unlockedPurple = GeneratedColumn<bool>(
+    'unlocked_purple',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("unlocked_purple" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1266,8 +1397,17 @@ class $UserProgressTable extends UserProgress
     loginQuestClaimed,
     learnQuestDone,
     learnQuestClaimed,
+    cardsLearnedToday,
     reviewQuestDone,
     reviewQuestClaimed,
+    allDailyQuestsDone,
+    allDailyQuestsClaimed,
+    unlockedGreen,
+    unlockedBlue,
+    unlockedYellow,
+    unlockedPink,
+    unlockedOrange,
+    unlockedPurple,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1335,6 +1475,15 @@ class $UserProgressTable extends UserProgress
         ),
       );
     }
+    if (data.containsKey('cards_learned_today')) {
+      context.handle(
+        _cardsLearnedTodayMeta,
+        cardsLearnedToday.isAcceptableOrUnknown(
+          data['cards_learned_today']!,
+          _cardsLearnedTodayMeta,
+        ),
+      );
+    }
     if (data.containsKey('review_quest_done')) {
       context.handle(
         _reviewQuestDoneMeta,
@@ -1350,6 +1499,78 @@ class $UserProgressTable extends UserProgress
         reviewQuestClaimed.isAcceptableOrUnknown(
           data['review_quest_claimed']!,
           _reviewQuestClaimedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('all_daily_quests_done')) {
+      context.handle(
+        _allDailyQuestsDoneMeta,
+        allDailyQuestsDone.isAcceptableOrUnknown(
+          data['all_daily_quests_done']!,
+          _allDailyQuestsDoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('all_daily_quests_claimed')) {
+      context.handle(
+        _allDailyQuestsClaimedMeta,
+        allDailyQuestsClaimed.isAcceptableOrUnknown(
+          data['all_daily_quests_claimed']!,
+          _allDailyQuestsClaimedMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unlocked_green')) {
+      context.handle(
+        _unlockedGreenMeta,
+        unlockedGreen.isAcceptableOrUnknown(
+          data['unlocked_green']!,
+          _unlockedGreenMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unlocked_blue')) {
+      context.handle(
+        _unlockedBlueMeta,
+        unlockedBlue.isAcceptableOrUnknown(
+          data['unlocked_blue']!,
+          _unlockedBlueMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unlocked_yellow')) {
+      context.handle(
+        _unlockedYellowMeta,
+        unlockedYellow.isAcceptableOrUnknown(
+          data['unlocked_yellow']!,
+          _unlockedYellowMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unlocked_pink')) {
+      context.handle(
+        _unlockedPinkMeta,
+        unlockedPink.isAcceptableOrUnknown(
+          data['unlocked_pink']!,
+          _unlockedPinkMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unlocked_orange')) {
+      context.handle(
+        _unlockedOrangeMeta,
+        unlockedOrange.isAcceptableOrUnknown(
+          data['unlocked_orange']!,
+          _unlockedOrangeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('unlocked_purple')) {
+      context.handle(
+        _unlockedPurpleMeta,
+        unlockedPurple.isAcceptableOrUnknown(
+          data['unlocked_purple']!,
+          _unlockedPurpleMeta,
         ),
       );
     }
@@ -1390,6 +1611,10 @@ class $UserProgressTable extends UserProgress
         DriftSqlType.bool,
         data['${effectivePrefix}learn_quest_claimed'],
       )!,
+      cardsLearnedToday: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}cards_learned_today'],
+      )!,
       reviewQuestDone: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}review_quest_done'],
@@ -1397,6 +1622,38 @@ class $UserProgressTable extends UserProgress
       reviewQuestClaimed: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}review_quest_claimed'],
+      )!,
+      allDailyQuestsDone: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}all_daily_quests_done'],
+      )!,
+      allDailyQuestsClaimed: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}all_daily_quests_claimed'],
+      )!,
+      unlockedGreen: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}unlocked_green'],
+      )!,
+      unlockedBlue: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}unlocked_blue'],
+      )!,
+      unlockedYellow: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}unlocked_yellow'],
+      )!,
+      unlockedPink: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}unlocked_pink'],
+      )!,
+      unlockedOrange: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}unlocked_orange'],
+      )!,
+      unlockedPurple: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}unlocked_purple'],
       )!,
     );
   }
@@ -1416,8 +1673,17 @@ class UserProgressData extends DataClass
   final bool loginQuestClaimed;
   final bool learnQuestDone;
   final bool learnQuestClaimed;
+  final int cardsLearnedToday;
   final bool reviewQuestDone;
   final bool reviewQuestClaimed;
+  final bool allDailyQuestsDone;
+  final bool allDailyQuestsClaimed;
+  final bool unlockedGreen;
+  final bool unlockedBlue;
+  final bool unlockedYellow;
+  final bool unlockedPink;
+  final bool unlockedOrange;
+  final bool unlockedPurple;
   const UserProgressData({
     required this.id,
     required this.currency,
@@ -1426,8 +1692,17 @@ class UserProgressData extends DataClass
     required this.loginQuestClaimed,
     required this.learnQuestDone,
     required this.learnQuestClaimed,
+    required this.cardsLearnedToday,
     required this.reviewQuestDone,
     required this.reviewQuestClaimed,
+    required this.allDailyQuestsDone,
+    required this.allDailyQuestsClaimed,
+    required this.unlockedGreen,
+    required this.unlockedBlue,
+    required this.unlockedYellow,
+    required this.unlockedPink,
+    required this.unlockedOrange,
+    required this.unlockedPurple,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1441,8 +1716,17 @@ class UserProgressData extends DataClass
     map['login_quest_claimed'] = Variable<bool>(loginQuestClaimed);
     map['learn_quest_done'] = Variable<bool>(learnQuestDone);
     map['learn_quest_claimed'] = Variable<bool>(learnQuestClaimed);
+    map['cards_learned_today'] = Variable<int>(cardsLearnedToday);
     map['review_quest_done'] = Variable<bool>(reviewQuestDone);
     map['review_quest_claimed'] = Variable<bool>(reviewQuestClaimed);
+    map['all_daily_quests_done'] = Variable<bool>(allDailyQuestsDone);
+    map['all_daily_quests_claimed'] = Variable<bool>(allDailyQuestsClaimed);
+    map['unlocked_green'] = Variable<bool>(unlockedGreen);
+    map['unlocked_blue'] = Variable<bool>(unlockedBlue);
+    map['unlocked_yellow'] = Variable<bool>(unlockedYellow);
+    map['unlocked_pink'] = Variable<bool>(unlockedPink);
+    map['unlocked_orange'] = Variable<bool>(unlockedOrange);
+    map['unlocked_purple'] = Variable<bool>(unlockedPurple);
     return map;
   }
 
@@ -1457,8 +1741,17 @@ class UserProgressData extends DataClass
       loginQuestClaimed: Value(loginQuestClaimed),
       learnQuestDone: Value(learnQuestDone),
       learnQuestClaimed: Value(learnQuestClaimed),
+      cardsLearnedToday: Value(cardsLearnedToday),
       reviewQuestDone: Value(reviewQuestDone),
       reviewQuestClaimed: Value(reviewQuestClaimed),
+      allDailyQuestsDone: Value(allDailyQuestsDone),
+      allDailyQuestsClaimed: Value(allDailyQuestsClaimed),
+      unlockedGreen: Value(unlockedGreen),
+      unlockedBlue: Value(unlockedBlue),
+      unlockedYellow: Value(unlockedYellow),
+      unlockedPink: Value(unlockedPink),
+      unlockedOrange: Value(unlockedOrange),
+      unlockedPurple: Value(unlockedPurple),
     );
   }
 
@@ -1475,8 +1768,19 @@ class UserProgressData extends DataClass
       loginQuestClaimed: serializer.fromJson<bool>(json['loginQuestClaimed']),
       learnQuestDone: serializer.fromJson<bool>(json['learnQuestDone']),
       learnQuestClaimed: serializer.fromJson<bool>(json['learnQuestClaimed']),
+      cardsLearnedToday: serializer.fromJson<int>(json['cardsLearnedToday']),
       reviewQuestDone: serializer.fromJson<bool>(json['reviewQuestDone']),
       reviewQuestClaimed: serializer.fromJson<bool>(json['reviewQuestClaimed']),
+      allDailyQuestsDone: serializer.fromJson<bool>(json['allDailyQuestsDone']),
+      allDailyQuestsClaimed: serializer.fromJson<bool>(
+        json['allDailyQuestsClaimed'],
+      ),
+      unlockedGreen: serializer.fromJson<bool>(json['unlockedGreen']),
+      unlockedBlue: serializer.fromJson<bool>(json['unlockedBlue']),
+      unlockedYellow: serializer.fromJson<bool>(json['unlockedYellow']),
+      unlockedPink: serializer.fromJson<bool>(json['unlockedPink']),
+      unlockedOrange: serializer.fromJson<bool>(json['unlockedOrange']),
+      unlockedPurple: serializer.fromJson<bool>(json['unlockedPurple']),
     );
   }
   @override
@@ -1490,8 +1794,17 @@ class UserProgressData extends DataClass
       'loginQuestClaimed': serializer.toJson<bool>(loginQuestClaimed),
       'learnQuestDone': serializer.toJson<bool>(learnQuestDone),
       'learnQuestClaimed': serializer.toJson<bool>(learnQuestClaimed),
+      'cardsLearnedToday': serializer.toJson<int>(cardsLearnedToday),
       'reviewQuestDone': serializer.toJson<bool>(reviewQuestDone),
       'reviewQuestClaimed': serializer.toJson<bool>(reviewQuestClaimed),
+      'allDailyQuestsDone': serializer.toJson<bool>(allDailyQuestsDone),
+      'allDailyQuestsClaimed': serializer.toJson<bool>(allDailyQuestsClaimed),
+      'unlockedGreen': serializer.toJson<bool>(unlockedGreen),
+      'unlockedBlue': serializer.toJson<bool>(unlockedBlue),
+      'unlockedYellow': serializer.toJson<bool>(unlockedYellow),
+      'unlockedPink': serializer.toJson<bool>(unlockedPink),
+      'unlockedOrange': serializer.toJson<bool>(unlockedOrange),
+      'unlockedPurple': serializer.toJson<bool>(unlockedPurple),
     };
   }
 
@@ -1503,8 +1816,17 @@ class UserProgressData extends DataClass
     bool? loginQuestClaimed,
     bool? learnQuestDone,
     bool? learnQuestClaimed,
+    int? cardsLearnedToday,
     bool? reviewQuestDone,
     bool? reviewQuestClaimed,
+    bool? allDailyQuestsDone,
+    bool? allDailyQuestsClaimed,
+    bool? unlockedGreen,
+    bool? unlockedBlue,
+    bool? unlockedYellow,
+    bool? unlockedPink,
+    bool? unlockedOrange,
+    bool? unlockedPurple,
   }) => UserProgressData(
     id: id ?? this.id,
     currency: currency ?? this.currency,
@@ -1515,8 +1837,17 @@ class UserProgressData extends DataClass
     loginQuestClaimed: loginQuestClaimed ?? this.loginQuestClaimed,
     learnQuestDone: learnQuestDone ?? this.learnQuestDone,
     learnQuestClaimed: learnQuestClaimed ?? this.learnQuestClaimed,
+    cardsLearnedToday: cardsLearnedToday ?? this.cardsLearnedToday,
     reviewQuestDone: reviewQuestDone ?? this.reviewQuestDone,
     reviewQuestClaimed: reviewQuestClaimed ?? this.reviewQuestClaimed,
+    allDailyQuestsDone: allDailyQuestsDone ?? this.allDailyQuestsDone,
+    allDailyQuestsClaimed: allDailyQuestsClaimed ?? this.allDailyQuestsClaimed,
+    unlockedGreen: unlockedGreen ?? this.unlockedGreen,
+    unlockedBlue: unlockedBlue ?? this.unlockedBlue,
+    unlockedYellow: unlockedYellow ?? this.unlockedYellow,
+    unlockedPink: unlockedPink ?? this.unlockedPink,
+    unlockedOrange: unlockedOrange ?? this.unlockedOrange,
+    unlockedPurple: unlockedPurple ?? this.unlockedPurple,
   );
   UserProgressData copyWithCompanion(UserProgressCompanion data) {
     return UserProgressData(
@@ -1537,12 +1868,39 @@ class UserProgressData extends DataClass
       learnQuestClaimed: data.learnQuestClaimed.present
           ? data.learnQuestClaimed.value
           : this.learnQuestClaimed,
+      cardsLearnedToday: data.cardsLearnedToday.present
+          ? data.cardsLearnedToday.value
+          : this.cardsLearnedToday,
       reviewQuestDone: data.reviewQuestDone.present
           ? data.reviewQuestDone.value
           : this.reviewQuestDone,
       reviewQuestClaimed: data.reviewQuestClaimed.present
           ? data.reviewQuestClaimed.value
           : this.reviewQuestClaimed,
+      allDailyQuestsDone: data.allDailyQuestsDone.present
+          ? data.allDailyQuestsDone.value
+          : this.allDailyQuestsDone,
+      allDailyQuestsClaimed: data.allDailyQuestsClaimed.present
+          ? data.allDailyQuestsClaimed.value
+          : this.allDailyQuestsClaimed,
+      unlockedGreen: data.unlockedGreen.present
+          ? data.unlockedGreen.value
+          : this.unlockedGreen,
+      unlockedBlue: data.unlockedBlue.present
+          ? data.unlockedBlue.value
+          : this.unlockedBlue,
+      unlockedYellow: data.unlockedYellow.present
+          ? data.unlockedYellow.value
+          : this.unlockedYellow,
+      unlockedPink: data.unlockedPink.present
+          ? data.unlockedPink.value
+          : this.unlockedPink,
+      unlockedOrange: data.unlockedOrange.present
+          ? data.unlockedOrange.value
+          : this.unlockedOrange,
+      unlockedPurple: data.unlockedPurple.present
+          ? data.unlockedPurple.value
+          : this.unlockedPurple,
     );
   }
 
@@ -1556,8 +1914,17 @@ class UserProgressData extends DataClass
           ..write('loginQuestClaimed: $loginQuestClaimed, ')
           ..write('learnQuestDone: $learnQuestDone, ')
           ..write('learnQuestClaimed: $learnQuestClaimed, ')
+          ..write('cardsLearnedToday: $cardsLearnedToday, ')
           ..write('reviewQuestDone: $reviewQuestDone, ')
-          ..write('reviewQuestClaimed: $reviewQuestClaimed')
+          ..write('reviewQuestClaimed: $reviewQuestClaimed, ')
+          ..write('allDailyQuestsDone: $allDailyQuestsDone, ')
+          ..write('allDailyQuestsClaimed: $allDailyQuestsClaimed, ')
+          ..write('unlockedGreen: $unlockedGreen, ')
+          ..write('unlockedBlue: $unlockedBlue, ')
+          ..write('unlockedYellow: $unlockedYellow, ')
+          ..write('unlockedPink: $unlockedPink, ')
+          ..write('unlockedOrange: $unlockedOrange, ')
+          ..write('unlockedPurple: $unlockedPurple')
           ..write(')'))
         .toString();
   }
@@ -1571,8 +1938,17 @@ class UserProgressData extends DataClass
     loginQuestClaimed,
     learnQuestDone,
     learnQuestClaimed,
+    cardsLearnedToday,
     reviewQuestDone,
     reviewQuestClaimed,
+    allDailyQuestsDone,
+    allDailyQuestsClaimed,
+    unlockedGreen,
+    unlockedBlue,
+    unlockedYellow,
+    unlockedPink,
+    unlockedOrange,
+    unlockedPurple,
   );
   @override
   bool operator ==(Object other) =>
@@ -1585,8 +1961,17 @@ class UserProgressData extends DataClass
           other.loginQuestClaimed == this.loginQuestClaimed &&
           other.learnQuestDone == this.learnQuestDone &&
           other.learnQuestClaimed == this.learnQuestClaimed &&
+          other.cardsLearnedToday == this.cardsLearnedToday &&
           other.reviewQuestDone == this.reviewQuestDone &&
-          other.reviewQuestClaimed == this.reviewQuestClaimed);
+          other.reviewQuestClaimed == this.reviewQuestClaimed &&
+          other.allDailyQuestsDone == this.allDailyQuestsDone &&
+          other.allDailyQuestsClaimed == this.allDailyQuestsClaimed &&
+          other.unlockedGreen == this.unlockedGreen &&
+          other.unlockedBlue == this.unlockedBlue &&
+          other.unlockedYellow == this.unlockedYellow &&
+          other.unlockedPink == this.unlockedPink &&
+          other.unlockedOrange == this.unlockedOrange &&
+          other.unlockedPurple == this.unlockedPurple);
 }
 
 class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
@@ -1597,8 +1982,17 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
   final Value<bool> loginQuestClaimed;
   final Value<bool> learnQuestDone;
   final Value<bool> learnQuestClaimed;
+  final Value<int> cardsLearnedToday;
   final Value<bool> reviewQuestDone;
   final Value<bool> reviewQuestClaimed;
+  final Value<bool> allDailyQuestsDone;
+  final Value<bool> allDailyQuestsClaimed;
+  final Value<bool> unlockedGreen;
+  final Value<bool> unlockedBlue;
+  final Value<bool> unlockedYellow;
+  final Value<bool> unlockedPink;
+  final Value<bool> unlockedOrange;
+  final Value<bool> unlockedPurple;
   const UserProgressCompanion({
     this.id = const Value.absent(),
     this.currency = const Value.absent(),
@@ -1607,8 +2001,17 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
     this.loginQuestClaimed = const Value.absent(),
     this.learnQuestDone = const Value.absent(),
     this.learnQuestClaimed = const Value.absent(),
+    this.cardsLearnedToday = const Value.absent(),
     this.reviewQuestDone = const Value.absent(),
     this.reviewQuestClaimed = const Value.absent(),
+    this.allDailyQuestsDone = const Value.absent(),
+    this.allDailyQuestsClaimed = const Value.absent(),
+    this.unlockedGreen = const Value.absent(),
+    this.unlockedBlue = const Value.absent(),
+    this.unlockedYellow = const Value.absent(),
+    this.unlockedPink = const Value.absent(),
+    this.unlockedOrange = const Value.absent(),
+    this.unlockedPurple = const Value.absent(),
   });
   UserProgressCompanion.insert({
     this.id = const Value.absent(),
@@ -1618,8 +2021,17 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
     this.loginQuestClaimed = const Value.absent(),
     this.learnQuestDone = const Value.absent(),
     this.learnQuestClaimed = const Value.absent(),
+    this.cardsLearnedToday = const Value.absent(),
     this.reviewQuestDone = const Value.absent(),
     this.reviewQuestClaimed = const Value.absent(),
+    this.allDailyQuestsDone = const Value.absent(),
+    this.allDailyQuestsClaimed = const Value.absent(),
+    this.unlockedGreen = const Value.absent(),
+    this.unlockedBlue = const Value.absent(),
+    this.unlockedYellow = const Value.absent(),
+    this.unlockedPink = const Value.absent(),
+    this.unlockedOrange = const Value.absent(),
+    this.unlockedPurple = const Value.absent(),
   });
   static Insertable<UserProgressData> custom({
     Expression<int>? id,
@@ -1629,8 +2041,17 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
     Expression<bool>? loginQuestClaimed,
     Expression<bool>? learnQuestDone,
     Expression<bool>? learnQuestClaimed,
+    Expression<int>? cardsLearnedToday,
     Expression<bool>? reviewQuestDone,
     Expression<bool>? reviewQuestClaimed,
+    Expression<bool>? allDailyQuestsDone,
+    Expression<bool>? allDailyQuestsClaimed,
+    Expression<bool>? unlockedGreen,
+    Expression<bool>? unlockedBlue,
+    Expression<bool>? unlockedYellow,
+    Expression<bool>? unlockedPink,
+    Expression<bool>? unlockedOrange,
+    Expression<bool>? unlockedPurple,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1640,9 +2061,20 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
       if (loginQuestClaimed != null) 'login_quest_claimed': loginQuestClaimed,
       if (learnQuestDone != null) 'learn_quest_done': learnQuestDone,
       if (learnQuestClaimed != null) 'learn_quest_claimed': learnQuestClaimed,
+      if (cardsLearnedToday != null) 'cards_learned_today': cardsLearnedToday,
       if (reviewQuestDone != null) 'review_quest_done': reviewQuestDone,
       if (reviewQuestClaimed != null)
         'review_quest_claimed': reviewQuestClaimed,
+      if (allDailyQuestsDone != null)
+        'all_daily_quests_done': allDailyQuestsDone,
+      if (allDailyQuestsClaimed != null)
+        'all_daily_quests_claimed': allDailyQuestsClaimed,
+      if (unlockedGreen != null) 'unlocked_green': unlockedGreen,
+      if (unlockedBlue != null) 'unlocked_blue': unlockedBlue,
+      if (unlockedYellow != null) 'unlocked_yellow': unlockedYellow,
+      if (unlockedPink != null) 'unlocked_pink': unlockedPink,
+      if (unlockedOrange != null) 'unlocked_orange': unlockedOrange,
+      if (unlockedPurple != null) 'unlocked_purple': unlockedPurple,
     });
   }
 
@@ -1654,8 +2086,17 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
     Value<bool>? loginQuestClaimed,
     Value<bool>? learnQuestDone,
     Value<bool>? learnQuestClaimed,
+    Value<int>? cardsLearnedToday,
     Value<bool>? reviewQuestDone,
     Value<bool>? reviewQuestClaimed,
+    Value<bool>? allDailyQuestsDone,
+    Value<bool>? allDailyQuestsClaimed,
+    Value<bool>? unlockedGreen,
+    Value<bool>? unlockedBlue,
+    Value<bool>? unlockedYellow,
+    Value<bool>? unlockedPink,
+    Value<bool>? unlockedOrange,
+    Value<bool>? unlockedPurple,
   }) {
     return UserProgressCompanion(
       id: id ?? this.id,
@@ -1665,8 +2106,18 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
       loginQuestClaimed: loginQuestClaimed ?? this.loginQuestClaimed,
       learnQuestDone: learnQuestDone ?? this.learnQuestDone,
       learnQuestClaimed: learnQuestClaimed ?? this.learnQuestClaimed,
+      cardsLearnedToday: cardsLearnedToday ?? this.cardsLearnedToday,
       reviewQuestDone: reviewQuestDone ?? this.reviewQuestDone,
       reviewQuestClaimed: reviewQuestClaimed ?? this.reviewQuestClaimed,
+      allDailyQuestsDone: allDailyQuestsDone ?? this.allDailyQuestsDone,
+      allDailyQuestsClaimed:
+          allDailyQuestsClaimed ?? this.allDailyQuestsClaimed,
+      unlockedGreen: unlockedGreen ?? this.unlockedGreen,
+      unlockedBlue: unlockedBlue ?? this.unlockedBlue,
+      unlockedYellow: unlockedYellow ?? this.unlockedYellow,
+      unlockedPink: unlockedPink ?? this.unlockedPink,
+      unlockedOrange: unlockedOrange ?? this.unlockedOrange,
+      unlockedPurple: unlockedPurple ?? this.unlockedPurple,
     );
   }
 
@@ -1694,11 +2145,40 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
     if (learnQuestClaimed.present) {
       map['learn_quest_claimed'] = Variable<bool>(learnQuestClaimed.value);
     }
+    if (cardsLearnedToday.present) {
+      map['cards_learned_today'] = Variable<int>(cardsLearnedToday.value);
+    }
     if (reviewQuestDone.present) {
       map['review_quest_done'] = Variable<bool>(reviewQuestDone.value);
     }
     if (reviewQuestClaimed.present) {
       map['review_quest_claimed'] = Variable<bool>(reviewQuestClaimed.value);
+    }
+    if (allDailyQuestsDone.present) {
+      map['all_daily_quests_done'] = Variable<bool>(allDailyQuestsDone.value);
+    }
+    if (allDailyQuestsClaimed.present) {
+      map['all_daily_quests_claimed'] = Variable<bool>(
+        allDailyQuestsClaimed.value,
+      );
+    }
+    if (unlockedGreen.present) {
+      map['unlocked_green'] = Variable<bool>(unlockedGreen.value);
+    }
+    if (unlockedBlue.present) {
+      map['unlocked_blue'] = Variable<bool>(unlockedBlue.value);
+    }
+    if (unlockedYellow.present) {
+      map['unlocked_yellow'] = Variable<bool>(unlockedYellow.value);
+    }
+    if (unlockedPink.present) {
+      map['unlocked_pink'] = Variable<bool>(unlockedPink.value);
+    }
+    if (unlockedOrange.present) {
+      map['unlocked_orange'] = Variable<bool>(unlockedOrange.value);
+    }
+    if (unlockedPurple.present) {
+      map['unlocked_purple'] = Variable<bool>(unlockedPurple.value);
     }
     return map;
   }
@@ -1713,8 +2193,17 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
           ..write('loginQuestClaimed: $loginQuestClaimed, ')
           ..write('learnQuestDone: $learnQuestDone, ')
           ..write('learnQuestClaimed: $learnQuestClaimed, ')
+          ..write('cardsLearnedToday: $cardsLearnedToday, ')
           ..write('reviewQuestDone: $reviewQuestDone, ')
-          ..write('reviewQuestClaimed: $reviewQuestClaimed')
+          ..write('reviewQuestClaimed: $reviewQuestClaimed, ')
+          ..write('allDailyQuestsDone: $allDailyQuestsDone, ')
+          ..write('allDailyQuestsClaimed: $allDailyQuestsClaimed, ')
+          ..write('unlockedGreen: $unlockedGreen, ')
+          ..write('unlockedBlue: $unlockedBlue, ')
+          ..write('unlockedYellow: $unlockedYellow, ')
+          ..write('unlockedPink: $unlockedPink, ')
+          ..write('unlockedOrange: $unlockedOrange, ')
+          ..write('unlockedPurple: $unlockedPurple')
           ..write(')'))
         .toString();
   }
@@ -2773,8 +3262,17 @@ typedef $$UserProgressTableCreateCompanionBuilder =
       Value<bool> loginQuestClaimed,
       Value<bool> learnQuestDone,
       Value<bool> learnQuestClaimed,
+      Value<int> cardsLearnedToday,
       Value<bool> reviewQuestDone,
       Value<bool> reviewQuestClaimed,
+      Value<bool> allDailyQuestsDone,
+      Value<bool> allDailyQuestsClaimed,
+      Value<bool> unlockedGreen,
+      Value<bool> unlockedBlue,
+      Value<bool> unlockedYellow,
+      Value<bool> unlockedPink,
+      Value<bool> unlockedOrange,
+      Value<bool> unlockedPurple,
     });
 typedef $$UserProgressTableUpdateCompanionBuilder =
     UserProgressCompanion Function({
@@ -2785,8 +3283,17 @@ typedef $$UserProgressTableUpdateCompanionBuilder =
       Value<bool> loginQuestClaimed,
       Value<bool> learnQuestDone,
       Value<bool> learnQuestClaimed,
+      Value<int> cardsLearnedToday,
       Value<bool> reviewQuestDone,
       Value<bool> reviewQuestClaimed,
+      Value<bool> allDailyQuestsDone,
+      Value<bool> allDailyQuestsClaimed,
+      Value<bool> unlockedGreen,
+      Value<bool> unlockedBlue,
+      Value<bool> unlockedYellow,
+      Value<bool> unlockedPink,
+      Value<bool> unlockedOrange,
+      Value<bool> unlockedPurple,
     });
 
 class $$UserProgressTableFilterComposer
@@ -2833,6 +3340,11 @@ class $$UserProgressTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<int> get cardsLearnedToday => $composableBuilder(
+    column: $table.cardsLearnedToday,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<bool> get reviewQuestDone => $composableBuilder(
     column: $table.reviewQuestDone,
     builder: (column) => ColumnFilters(column),
@@ -2840,6 +3352,46 @@ class $$UserProgressTableFilterComposer
 
   ColumnFilters<bool> get reviewQuestClaimed => $composableBuilder(
     column: $table.reviewQuestClaimed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allDailyQuestsDone => $composableBuilder(
+    column: $table.allDailyQuestsDone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get allDailyQuestsClaimed => $composableBuilder(
+    column: $table.allDailyQuestsClaimed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get unlockedGreen => $composableBuilder(
+    column: $table.unlockedGreen,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get unlockedBlue => $composableBuilder(
+    column: $table.unlockedBlue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get unlockedYellow => $composableBuilder(
+    column: $table.unlockedYellow,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get unlockedPink => $composableBuilder(
+    column: $table.unlockedPink,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get unlockedOrange => $composableBuilder(
+    column: $table.unlockedOrange,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get unlockedPurple => $composableBuilder(
+    column: $table.unlockedPurple,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -2888,6 +3440,11 @@ class $$UserProgressTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get cardsLearnedToday => $composableBuilder(
+    column: $table.cardsLearnedToday,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<bool> get reviewQuestDone => $composableBuilder(
     column: $table.reviewQuestDone,
     builder: (column) => ColumnOrderings(column),
@@ -2895,6 +3452,46 @@ class $$UserProgressTableOrderingComposer
 
   ColumnOrderings<bool> get reviewQuestClaimed => $composableBuilder(
     column: $table.reviewQuestClaimed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allDailyQuestsDone => $composableBuilder(
+    column: $table.allDailyQuestsDone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get allDailyQuestsClaimed => $composableBuilder(
+    column: $table.allDailyQuestsClaimed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get unlockedGreen => $composableBuilder(
+    column: $table.unlockedGreen,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get unlockedBlue => $composableBuilder(
+    column: $table.unlockedBlue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get unlockedYellow => $composableBuilder(
+    column: $table.unlockedYellow,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get unlockedPink => $composableBuilder(
+    column: $table.unlockedPink,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get unlockedOrange => $composableBuilder(
+    column: $table.unlockedOrange,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get unlockedPurple => $composableBuilder(
+    column: $table.unlockedPurple,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -2939,6 +3536,11 @@ class $$UserProgressTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<int> get cardsLearnedToday => $composableBuilder(
+    column: $table.cardsLearnedToday,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<bool> get reviewQuestDone => $composableBuilder(
     column: $table.reviewQuestDone,
     builder: (column) => column,
@@ -2946,6 +3548,46 @@ class $$UserProgressTableAnnotationComposer
 
   GeneratedColumn<bool> get reviewQuestClaimed => $composableBuilder(
     column: $table.reviewQuestClaimed,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allDailyQuestsDone => $composableBuilder(
+    column: $table.allDailyQuestsDone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get allDailyQuestsClaimed => $composableBuilder(
+    column: $table.allDailyQuestsClaimed,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get unlockedGreen => $composableBuilder(
+    column: $table.unlockedGreen,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get unlockedBlue => $composableBuilder(
+    column: $table.unlockedBlue,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get unlockedYellow => $composableBuilder(
+    column: $table.unlockedYellow,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get unlockedPink => $composableBuilder(
+    column: $table.unlockedPink,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get unlockedOrange => $composableBuilder(
+    column: $table.unlockedOrange,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get unlockedPurple => $composableBuilder(
+    column: $table.unlockedPurple,
     builder: (column) => column,
   );
 }
@@ -2988,8 +3630,17 @@ class $$UserProgressTableTableManager
                 Value<bool> loginQuestClaimed = const Value.absent(),
                 Value<bool> learnQuestDone = const Value.absent(),
                 Value<bool> learnQuestClaimed = const Value.absent(),
+                Value<int> cardsLearnedToday = const Value.absent(),
                 Value<bool> reviewQuestDone = const Value.absent(),
                 Value<bool> reviewQuestClaimed = const Value.absent(),
+                Value<bool> allDailyQuestsDone = const Value.absent(),
+                Value<bool> allDailyQuestsClaimed = const Value.absent(),
+                Value<bool> unlockedGreen = const Value.absent(),
+                Value<bool> unlockedBlue = const Value.absent(),
+                Value<bool> unlockedYellow = const Value.absent(),
+                Value<bool> unlockedPink = const Value.absent(),
+                Value<bool> unlockedOrange = const Value.absent(),
+                Value<bool> unlockedPurple = const Value.absent(),
               }) => UserProgressCompanion(
                 id: id,
                 currency: currency,
@@ -2998,8 +3649,17 @@ class $$UserProgressTableTableManager
                 loginQuestClaimed: loginQuestClaimed,
                 learnQuestDone: learnQuestDone,
                 learnQuestClaimed: learnQuestClaimed,
+                cardsLearnedToday: cardsLearnedToday,
                 reviewQuestDone: reviewQuestDone,
                 reviewQuestClaimed: reviewQuestClaimed,
+                allDailyQuestsDone: allDailyQuestsDone,
+                allDailyQuestsClaimed: allDailyQuestsClaimed,
+                unlockedGreen: unlockedGreen,
+                unlockedBlue: unlockedBlue,
+                unlockedYellow: unlockedYellow,
+                unlockedPink: unlockedPink,
+                unlockedOrange: unlockedOrange,
+                unlockedPurple: unlockedPurple,
               ),
           createCompanionCallback:
               ({
@@ -3010,8 +3670,17 @@ class $$UserProgressTableTableManager
                 Value<bool> loginQuestClaimed = const Value.absent(),
                 Value<bool> learnQuestDone = const Value.absent(),
                 Value<bool> learnQuestClaimed = const Value.absent(),
+                Value<int> cardsLearnedToday = const Value.absent(),
                 Value<bool> reviewQuestDone = const Value.absent(),
                 Value<bool> reviewQuestClaimed = const Value.absent(),
+                Value<bool> allDailyQuestsDone = const Value.absent(),
+                Value<bool> allDailyQuestsClaimed = const Value.absent(),
+                Value<bool> unlockedGreen = const Value.absent(),
+                Value<bool> unlockedBlue = const Value.absent(),
+                Value<bool> unlockedYellow = const Value.absent(),
+                Value<bool> unlockedPink = const Value.absent(),
+                Value<bool> unlockedOrange = const Value.absent(),
+                Value<bool> unlockedPurple = const Value.absent(),
               }) => UserProgressCompanion.insert(
                 id: id,
                 currency: currency,
@@ -3020,8 +3689,17 @@ class $$UserProgressTableTableManager
                 loginQuestClaimed: loginQuestClaimed,
                 learnQuestDone: learnQuestDone,
                 learnQuestClaimed: learnQuestClaimed,
+                cardsLearnedToday: cardsLearnedToday,
                 reviewQuestDone: reviewQuestDone,
                 reviewQuestClaimed: reviewQuestClaimed,
+                allDailyQuestsDone: allDailyQuestsDone,
+                allDailyQuestsClaimed: allDailyQuestsClaimed,
+                unlockedGreen: unlockedGreen,
+                unlockedBlue: unlockedBlue,
+                unlockedYellow: unlockedYellow,
+                unlockedPink: unlockedPink,
+                unlockedOrange: unlockedOrange,
+                unlockedPurple: unlockedPurple,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

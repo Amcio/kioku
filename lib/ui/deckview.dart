@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../data/database.dart'; 
 import '../data/deck_provider.dart';
+import '../data/theme_provider.dart';
 import 'deck_detail_screen.dart';
 
 class DeckView extends StatelessWidget {
@@ -11,9 +12,10 @@ class DeckView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deckProvider = context.watch<DeckProvider>();
+    final bannerColor = context.watch<ThemeProvider>().materialColor;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Decks"), backgroundColor: Colors.red),
+      appBar: AppBar(title: const Text("Decks"), backgroundColor: bannerColor),
       body: deckProvider.decks.isEmpty
           ? const Center(child: Text("No decks yet. Create one!"))
           : ListView.builder(
