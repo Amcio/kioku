@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../ui/deckview.dart';
 import '../ui/quests.dart';
+import '../ui/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final List<Widget> _views = [
     const DeckView(),
     const QuestsTab(), 
-    const Placeholder() // Settings
+    const SettingsScreen() // Settings
   ];
   
   // Add NavigationDestination

@@ -220,10 +220,21 @@ class _StudyScreenState extends State<StudyScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildBtn("Again", Colors.red, fsrs.Rating.again, activeCard),
-                  _buildBtn("Hard", Colors.orange, fsrs.Rating.hard, activeCard),
-                  _buildBtn("Good", Colors.blue, fsrs.Rating.good, activeCard),
-                  _buildBtn("Easy", Colors.green, fsrs.Rating.easy, activeCard),
+                  Expanded(
+                    child: _buildBtn("Again", Colors.red, fsrs.Rating.again, activeCard),
+                  ),
+                  const SizedBox(width: 8), // Add spacing between buttons
+                  Expanded(
+                    child: _buildBtn("Hard", Colors.orange, fsrs.Rating.hard, activeCard),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _buildBtn("Good", Colors.blue, fsrs.Rating.good, activeCard),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _buildBtn("Easy", Colors.green, fsrs.Rating.easy, activeCard),
+                  ),
                 ],
               ),
             ],

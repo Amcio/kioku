@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'data/database.dart';
 import 'data/deck_provider.dart';
 import 'data/quest_provider.dart';
+import 'data/theme_provider.dart';
 import 'ui/home_screen.dart';
 
 void main() async {
@@ -14,6 +15,7 @@ void main() async {
         providers: [
           ChangeNotifierProvider(create: (_) => DeckProvider(database: database)),
           ChangeNotifierProvider(create: (_) => QuestProvider(database: database)),
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ],
         child: const KiokuApp(),
       ),
@@ -25,10 +27,11 @@ class KiokuApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = context.watch<ThemeProvider>().themeMode;
     return MaterialApp(
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       home: HomeScreen(),
     );
   }
