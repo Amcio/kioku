@@ -16,11 +16,14 @@ class UserProgress extends Table {
 
   // Quest 3: Daily Review
   BoolColumn get reviewQuestDone => boolean().withDefault(const Constant(false))();
-  BoolColumn get reviewQuestClaimed => boolean().withDefault(const Constant(false))();
+  BoolColumn get reviewQuestClaimed =>
+      boolean().withDefault(const Constant(false))();
 
-    // Quest 3: All Daily Quests
-  BoolColumn get allDailyQuestsDone => boolean().withDefault(const Constant(false))();
-  BoolColumn get allDailyQuestsClaimed => boolean().withDefault(const Constant(false))();
+  // Quest 3: All Daily Quests
+  BoolColumn get allDailyQuestsDone =>
+      boolean().withDefault(const Constant(false))();
+  BoolColumn get allDailyQuestsClaimed =>
+      boolean().withDefault(const Constant(false))();
 
   // Shop Unlocks
   BoolColumn get unlockedGreen => boolean().withDefault(const Constant(false))();

@@ -11,16 +11,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // makes sure plugins are initialized
   final database = AppDatabase();
   runApp(
-  MultiProvider( // Change to MultiProvider
-        providers: [
-          ChangeNotifierProvider(create: (_) => DeckProvider(database: database)),
-          ChangeNotifierProvider(create: (_) => QuestProvider(database: database)),
-          ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ],
-        child: const KiokuApp(),
-      ),
-    );
-  }
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DeckProvider(database: database)),
+        ChangeNotifierProvider(create: (_) => QuestProvider(database: database)),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ],
+      child: const KiokuApp(),
+    ),
+  );
+}
 
 class KiokuApp extends StatelessWidget {
   const KiokuApp({super.key});
