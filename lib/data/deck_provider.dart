@@ -11,14 +11,14 @@ class DeckProvider extends ChangeNotifier {
   final AppDatabase database;
   List<Deck> _decks = [];
   List<Flashcard> _cards = [];
-  
+
   List<Deck> get decks => _decks;
   List<Flashcard> get cards => _cards;
 
   StreamSubscription<List<Flashcard>>? _cardsSubscription;
   StreamSubscription<List<Deck>>? _decksSubscription;
 
-  DeckProvider({required this.database}) {
+  DeckProvider(this.database) {
     _initWatcher();
   }
 
@@ -56,20 +56,17 @@ class DeckProvider extends ChangeNotifier {
       front: front,
       back: back,
       state: 1, // fsrs.State.learning
-      nextReviewDate: Value(DateTime.now()), 
+      nextReviewDate: Value(DateTime.now()),
     );
     await addCard(companion);
   }
 
   Future<void> deleteCard(int id) async {
-    await (database.delete(database.flashcards)..where((f) => f.id.equals(id)))
-        .go();
+    await (database.delete(database.flashcards)..where((f) => f.id.equals(id))).go();
   }
 
   Future<void> createDeck(String name) async {
-    await database
-        .into(database.decks)
-        .insert(DecksCompanion.insert(name: name));
+    await database.into(database.decks).insert(DecksCompanion.insert(name: name));
   }
 
   Future<void> processReview(Flashcard dbRow, fsrs.Rating rating) async {
@@ -85,7 +82,6 @@ class DeckProvider extends ChangeNotifier {
     await (database.into(database.reviews).insert(review));
   }
 
-  // UPDATED SESSION LOGIC
   Future<List<Flashcard>> getSessionCards(
     int deckId, {
     int limit = 50, // Total session limit
@@ -94,15 +90,21 @@ class DeckProvider extends ChangeNotifier {
 
     // Fetch ALL cards that are due right now (or in the past)
     // This includes "New" cards (which we set to due=now) and Review cards.
-    final dueCards = await (database.select(database.flashcards)
-          ..where((tbl) => tbl.deckId.equals(deckId))
-          ..where((tbl) => tbl.nextReviewDate.isSmallerOrEqualValue(now)) // CHECK DUE DATE
-          ..orderBy([
-            // Prioritize most overdue cards first
-            (t) => OrderingTerm(expression: t.nextReviewDate, mode: OrderingMode.asc)
-          ])
-          ..limit(limit))
-        .get();
+    final dueCards =
+        await (database.select(database.flashcards)
+              ..where((tbl) => tbl.deckId.equals(deckId))
+              ..where(
+                (tbl) => tbl.nextReviewDate.isSmallerOrEqualValue(now),
+              ) // CHECK DUE DATE
+              ..orderBy([
+                // Prioritize most overdue cards first
+                (t) => OrderingTerm(
+                  expression: t.nextReviewDate,
+                  mode: OrderingMode.asc,
+                ),
+              ])
+              ..limit(limit))
+            .get();
 
     // Shuffle only for the user experience, so they don't guess based on order
     // But we already filtered to ensure everything here IS actually due.

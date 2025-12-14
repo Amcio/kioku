@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data/database.dart'; 
+import '../data/database.dart';
 import '../data/deck_provider.dart';
 import '../data/theme_provider.dart';
 import 'deck_detail_screen.dart';
@@ -25,7 +25,9 @@ class DeckView extends StatelessWidget {
                 return ListTile(
                   leading: const Icon(Icons.folder, size: 40, color: Colors.amber),
                   title: Text(deck.name),
-                  subtitle: Text("${deckProvider.cards.where((c) => c.deckId == deck.id).length} cards"),
+                  subtitle: Text(
+                    "${deckProvider.cards.where((c) => c.deckId == deck.id).length} cards",
+                  ),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
                     Navigator.of(context).push(

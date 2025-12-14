@@ -4,11 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   Color _materialColor = Colors.red;
+  late final SharedPreferences _prefs;
 
   ThemeMode get themeMode => _themeMode;
   Color get materialColor => _materialColor;
 
-  ThemeProvider() {
+  ThemeProvider(this._prefs) {
     _loadPreferences();
   }
 
@@ -16,8 +17,7 @@ class ThemeProvider extends ChangeNotifier {
     if (_themeMode != mode) {
       _themeMode = mode;
       notifyListeners();
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('theme_mode', mode.index);
+      await _prefs.setInt('theme_mode', mode.index);
     }
   }
 
@@ -25,27 +25,26 @@ class ThemeProvider extends ChangeNotifier {
     if (_materialColor != color) {
       _materialColor = color;
       notifyListeners();
-      
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('material_color_value', color.value);
+
+      await _prefs.setInt('material_color_value', color.value);
     }
   }
 
   void _loadPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    
     // Load ThemeMode
-    final int? savedTheme = prefs.getInt('theme_mode');
-    if (savedTheme != null && savedTheme >= 0 && savedTheme < ThemeMode.values.length) {
+    final int? savedTheme = _prefs.getInt('theme_mode');
+    if (savedTheme != null &&
+        savedTheme >= 0 &&
+        savedTheme < ThemeMode.values.length) {
       _themeMode = ThemeMode.values[savedTheme];
     }
 
     // Load Material Color
-    final int? savedColor = prefs.getInt('material_color_value');
+    final int? savedColor = _prefs.getInt('material_color_value');
     if (savedColor != null) {
       _materialColor = Color(savedColor);
     }
-    
+
     notifyListeners();
   }
 }

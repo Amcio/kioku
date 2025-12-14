@@ -9,23 +9,29 @@ class QuestProvider extends ChangeNotifier {
 
   UserProgressData? get data => _data;
 
-  QuestProvider({required this.database}) {
+  QuestProvider(this.database) {
     _init();
   }
 
   Future<void> _init() async {
     database.watchUserProgress().listen((data) async {
       if (data == null) {
-        await database.into(database.userProgress).insert(
+        await database
+            .into(database.userProgress)
+            .insert(
               UserProgressCompanion.insert(
                 lastResetDate: Value(DateTime.now()),
                 loginQuestDone: const Value(true),
               ),
             );
-      } else {
-        _data = data;
-        await _checkDailyReset(data);
-        await _checkAllDailyComplete();
+        return; // Wait for the next stream event (with data)
+      }
+
+      final previousData = _data;
+      _data = data;
+      await _checkDailyReset(data);
+      await _checkAllDailyComplete();
+      if (previousData != _data) {
         notifyListeners();
       }
     });
@@ -35,13 +41,16 @@ class QuestProvider extends ChangeNotifier {
     final now = DateTime.now();
     final last = data.lastResetDate;
 
-    bool needsReset = last == null ||
+    bool needsReset =
+        last == null ||
         last.year != now.year ||
         last.month != now.month ||
         last.day != now.day;
 
     if (needsReset) {
-      await database.update(database.userProgress).write(
+      await database
+          .update(database.userProgress)
+          .write(
             UserProgressCompanion(
               lastResetDate: Value(now),
               loginQuestDone: const Value(true),
@@ -56,40 +65,39 @@ class QuestProvider extends ChangeNotifier {
             ),
           );
     } else if (!data.loginQuestDone) {
-      await database.update(database.userProgress).write(
-            const UserProgressCompanion(loginQuestDone: Value(true)),
-          );
+      await database
+          .update(database.userProgress)
+          .write(const UserProgressCompanion(loginQuestDone: Value(true)));
     }
   }
 
   Future<void> incrementLearnedCards() async {
     if (_data == null) return;
-    
+
     // 1. Increment
     int current = _data!.cardsLearnedToday;
     int next = current + 1;
-    
-    await database.update(database.userProgress).write(
-      UserProgressCompanion(cardsLearnedToday: Value(next)),
-    );
+
+    await database
+        .update(database.userProgress)
+        .write(UserProgressCompanion(cardsLearnedToday: Value(next)));
 
     // 2. Check for completion (Target: 5)
     if (next >= 5 && !_data!.learnQuestDone) {
       await completeLearnQuest();
     }
   }
-  
+
   // Check if the 3 main quests are done
   Future<void> _checkAllDailyComplete() async {
-    if (_data == null) return; 
-    final allDone = _data!.loginQuestDone && 
-                    _data!.learnQuestDone && 
-                    _data!.reviewQuestDone;
+    if (_data == null) return;
+    final allDone =
+        _data!.loginQuestDone && _data!.learnQuestDone && _data!.reviewQuestDone;
 
     if (allDone && !_data!.allDailyQuestsDone) {
-      await database.update(database.userProgress).write(
-        const UserProgressCompanion(allDailyQuestsDone: Value(true)),
-      );
+      await database
+          .update(database.userProgress)
+          .write(const UserProgressCompanion(allDailyQuestsDone: Value(true)));
     }
   }
 
@@ -119,21 +127,21 @@ class QuestProvider extends ChangeNotifier {
   }
 
   Future<void> completeLearnQuest() async {
-    await database.update(database.userProgress).write(
-          const UserProgressCompanion(learnQuestDone: Value(true)),
-        );
+    await database
+        .update(database.userProgress)
+        .write(const UserProgressCompanion(learnQuestDone: Value(true)));
   }
 
   Future<void> completeReviewQuest() async {
-    await database.update(database.userProgress).write(
-          const UserProgressCompanion(reviewQuestDone: Value(true)),
-        );
+    await database
+        .update(database.userProgress)
+        .write(const UserProgressCompanion(reviewQuestDone: Value(true)));
   }
 
-    Future<void> completeAllDailyQuests() async {
-    await database.update(database.userProgress).write(
-          const UserProgressCompanion(allDailyQuestsDone: Value(true)),
-        );
+  Future<void> completeAllDailyQuests() async {
+    await database
+        .update(database.userProgress)
+        .write(const UserProgressCompanion(allDailyQuestsDone: Value(true)));
   }
 
   // --- SHOP / GACHA HELPERS ---
@@ -143,35 +151,34 @@ class QuestProvider extends ChangeNotifier {
     if (_data == null) return false;
     // If ANY of these are false, we have locked colors
     return !_data!.unlockedGreen ||
-           !_data!.unlockedBlue ||
-           !_data!.unlockedYellow ||
-           !_data!.unlockedPink ||
-           !_data!.unlockedOrange ||
-           !_data!.unlockedPurple;
+        !_data!.unlockedBlue ||
+        !_data!.unlockedYellow ||
+        !_data!.unlockedPink ||
+        !_data!.unlockedOrange ||
+        !_data!.unlockedPurple;
   }
 
   bool isColorUnlocked(String colorName) {
     if (colorName == 'Red') return true;
     if (_data == null) return false;
 
-    switch (colorName) {
-      case 'Green': return _data!.unlockedGreen;
-      case 'Blue': return _data!.unlockedBlue;
-      case 'Yellow': return _data!.unlockedYellow;
-      case 'Pink': return _data!.unlockedPink;
-      case 'Orange': return _data!.unlockedOrange;
-      case 'Purple': return _data!.unlockedPurple;
-      default: return false;
-    }
+    return switch (colorName) {
+      'Green' => _data!.unlockedGreen,
+      'Blue' => _data!.unlockedBlue,
+      'Yellow' => _data!.unlockedYellow,
+      'Pink' => _data!.unlockedPink,
+      'Orange' => _data!.unlockedOrange,
+      'Purple' => _data!.unlockedPurple,
+      _ => false,
+    };
   }
 
   // Gacha Logic
   Future<String?> unlockRandomColor(int cost) async {
-    if (_data == null) return null;
-    if (_data!.currency < cost) return null;
+    if (_data == null || _data!.currency < cost) return null;
 
     // 1. Identify what is locked
-    List<String> lockedColors = [];
+    final List<String> lockedColors = [];
     if (!_data!.unlockedGreen) lockedColors.add('Green');
     if (!_data!.unlockedBlue) lockedColors.add('Blue');
     if (!_data!.unlockedYellow) lockedColors.add('Yellow');
@@ -189,24 +196,30 @@ class QuestProvider extends ChangeNotifier {
     int newBalance = _data!.currency - cost;
     var update = UserProgressCompanion(currency: Value(newBalance));
 
-    switch (colorToUnlock) {
-      case 'Green': update = update.copyWith(unlockedGreen: const Value(true)); break;
-      case 'Blue': update = update.copyWith(unlockedBlue: const Value(true)); break;
-      case 'Yellow': update = update.copyWith(unlockedYellow: const Value(true)); break;
-      case 'Pink': update = update.copyWith(unlockedPink: const Value(true)); break;
-      case 'Orange': update = update.copyWith(unlockedOrange: const Value(true)); break;
-      case 'Purple': update = update.copyWith(unlockedPurple: const Value(true)); break;
-    }
+    update = switch (colorToUnlock) {
+      'Green' => update.copyWith(unlockedGreen: const Value(true)),
+      'Blue' => update.copyWith(unlockedBlue: const Value(true)),
+      'Yellow' => update.copyWith(unlockedYellow: const Value(true)),
+      'Pink' => update.copyWith(unlockedPink: const Value(true)),
+      'Orange' => update.copyWith(unlockedOrange: const Value(true)),
+      'Purple' => update.copyWith(unlockedPurple: const Value(true)),
+      _ => update,
+    };
 
-    await database.update(database.userProgress).write(update);
+    await _updateProgress(update);
     return colorToUnlock;
   }
-  
+
   // Debug Tool
   Future<void> debugAddCurrency(int amount) async {
     if (_data == null) return;
-    await database.update(database.userProgress).write(
-      UserProgressCompanion(currency: Value(_data!.currency + amount)),
-    );
+    await database
+        .update(database.userProgress)
+        .write(UserProgressCompanion(currency: Value(_data!.currency + amount)));
+  }
+
+  // Helper db method
+  Future<void> _updateProgress(UserProgressCompanion update) async {
+    await database.update(database.userProgress).write(update);
   }
 }

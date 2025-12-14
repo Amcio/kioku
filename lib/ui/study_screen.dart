@@ -37,16 +37,14 @@ class _StudyScreenState extends State<StudyScreen>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    _animation =
-        CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack)
-          ..addStatusListener((status) {
-            _status = status;
-          });
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack)
+      ..addStatusListener((status) {
+        _status = status;
+      });
   }
 
   Future<void> _loadSession() async {
-    final cards =
-        await context.read<DeckProvider>().getSessionCards(widget.deckID);
+    final cards = await context.read<DeckProvider>().getSessionCards(widget.deckID);
     if (mounted) {
       setState(() {
         _sessionCards = cards;
@@ -117,10 +115,7 @@ class _StudyScreenState extends State<StudyScreen>
               width: double.infinity,
               alignment: Alignment.center,
               child: _animation.value <= 0.5
-                  ? Text(
-                      activeCard.front,
-                      style: const TextStyle(fontSize: 24),
-                    )
+                  ? Text(activeCard.front, style: const TextStyle(fontSize: 24))
                   : Transform(
                       alignment: Alignment.center,
                       transform: Matrix4.identity()..rotateY(pi),
@@ -136,12 +131,7 @@ class _StudyScreenState extends State<StudyScreen>
     );
   }
 
-  Widget _buildBtn(
-    String text,
-    Color color,
-    fsrs.Rating rating,
-    Flashcard card,
-  ) {
+  Widget _buildBtn(String text, Color color, fsrs.Rating rating, Flashcard card) {
     final interval = _getNextInterval(card, rating);
 
     return ElevatedButton(
@@ -150,8 +140,10 @@ class _StudyScreenState extends State<StudyScreen>
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       ),
       onPressed: () {
-        // FIX: Check lastReviewDate instead of state to find "New" cards
-        if (card.lastReviewDate == null) {
+        var now = DateTime.now().toUtc();
+        if (card.lastReviewDate == null ||
+            card.lastReviewDate!.compareTo(DateTime(now.year, now.month, now.day)) ==
+                -1) {
           context.read<QuestProvider>().incrementLearnedCards();
         }
 
@@ -201,7 +193,8 @@ class _StudyScreenState extends State<StudyScreen>
 
     return Scaffold(
       appBar: AppBar(
-          title: Text("Card ${_currentIndex + 1}/${_sessionCards.length}")),
+        title: Text("Card ${_currentIndex + 1}/${_sessionCards.length}"),
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 800),
@@ -210,26 +203,45 @@ class _StudyScreenState extends State<StudyScreen>
             children: [
               AnimatedBuilder(
                 animation: _controller,
-                builder: (context, child) =>
-                    animatedCard(context, _sessionCards),
+                builder: (context, child) => animatedCard(context, _sessionCards),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                    child: _buildBtn("Again", Colors.red, fsrs.Rating.again, activeCard),
+                    child: _buildBtn(
+                      "Again",
+                      Colors.red,
+                      fsrs.Rating.again,
+                      activeCard,
+                    ),
                   ),
                   const SizedBox(width: 8), // Add spacing between buttons
                   Expanded(
-                    child: _buildBtn("Hard", Colors.orange, fsrs.Rating.hard, activeCard),
+                    child: _buildBtn(
+                      "Hard",
+                      Colors.orange,
+                      fsrs.Rating.hard,
+                      activeCard,
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildBtn("Good", Colors.blue, fsrs.Rating.good, activeCard),
+                    child: _buildBtn(
+                      "Good",
+                      Colors.blue,
+                      fsrs.Rating.good,
+                      activeCard,
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: _buildBtn("Easy", Colors.green, fsrs.Rating.easy, activeCard),
+                    child: _buildBtn(
+                      "Easy",
+                      Colors.green,
+                      fsrs.Rating.easy,
+                      activeCard,
+                    ),
                   ),
                 ],
               ),
