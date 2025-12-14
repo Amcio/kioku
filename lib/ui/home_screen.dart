@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../ui/deckview.dart';
+import '../ui/quests.dart';
+import '../ui/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,10 +13,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  final List<Widget> _views = [const DeckView(), const Placeholder()];
+// Add QuestsTab to views
+    final List<Widget> _views = [
+    const DeckView(),
+    const QuestsTab(), 
+    const SettingsScreen() // Settings
+  ];
+  
+  // Add NavigationDestination
   final List<NavigationDestination> destinations = [
-    NavigationDestination(icon: Icon(Icons.view_list), label: 'Decks'),
-    NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
+    const NavigationDestination(icon: Icon(Icons.view_list), label: 'Decks'),
+    const NavigationDestination(icon: Icon(Icons.star), label: 'Quests'),
+    const NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
   ];
 
   @override
