@@ -75,7 +75,7 @@ class QuestsTab extends StatelessWidget {
               _buildQuestTile(
                 context,
                 title: "Finish all daily quests",
-                subtitle: "3 dailies a day keeps the women away.",
+                subtitle: "3 dailies a day keep the brain fog away.",
                 isDone: data.allDailyQuestsDone,
                 isClaimed: data.allDailyQuestsClaimed,
                 reward: 20,
@@ -85,8 +85,10 @@ class QuestsTab extends StatelessWidget {
               const Divider(height: 40, thickness: 2),
 
               // --- Gacha Shop ---
-              const Text("Color Gacha",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text(
+                "Color Gacha",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 20),
               _buildGachaSection(context, provider),
             ],
@@ -118,34 +120,40 @@ class QuestsTab extends StatelessWidget {
         trailing: isClaimed
             ? const Text('Claimed', style: TextStyle(color: Colors.grey))
             : isDone
-                ? ElevatedButton(
-                    onPressed: onClaim,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                      foregroundColor: Colors.black,
-                    ),
-                    child: Text('Claim $reward G'),
-                  )
-                : Text(
-                  '$reward G',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.amber),
+            ? ElevatedButton(
+                onPressed: onClaim,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  foregroundColor: Colors.black,
                 ),
+                child: Text('Claim $reward G'),
+              )
+            : Text(
+                '$reward G',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.amber,
+                ),
+              ),
       ),
     );
   }
-  
+
   Widget _buildGachaSection(BuildContext context, QuestProvider provider) {
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Left decoration
-          Column(children: [
-            _miniSquare(Colors.red),
-            _miniSquare(Colors.green),
-            _miniSquare(Colors.blue),
-            _miniSquare(Colors.yellow),
-          ]),
+          Column(
+            children: [
+              _miniSquare(Colors.red),
+              _miniSquare(Colors.green),
+              _miniSquare(Colors.blue),
+              _miniSquare(Colors.yellow),
+            ],
+          ),
           const SizedBox(width: 20),
 
           // Main Button
@@ -153,8 +161,7 @@ class QuestsTab extends StatelessWidget {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
                   textStyle: const TextStyle(fontSize: 18),
                 ),
                 onPressed: () {
@@ -169,7 +176,11 @@ class QuestsTab extends StatelessWidget {
                   // CHECK 2: Items available?
                   if (!provider.hasLockedColors) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Suffering from success. Nothing left to roll for...")),
+                      const SnackBar(
+                        content: Text(
+                          "Suffering from success. Nothing left to roll for...",
+                        ),
+                      ),
                     );
                     return;
                   }
@@ -189,12 +200,14 @@ class QuestsTab extends StatelessWidget {
           const SizedBox(width: 20),
 
           // Right decoration
-          Column(children: [
-            _miniSquare(Colors.pink),
-            _miniSquare(Colors.orange),
-            _miniSquare(Colors.purple),
-            _miniSquare(Colors.blue),
-          ]),
+          Column(
+            children: [
+              _miniSquare(Colors.pink),
+              _miniSquare(Colors.orange),
+              _miniSquare(Colors.purple),
+              _miniSquare(Colors.blue),
+            ],
+          ),
         ],
       ),
     );
@@ -230,7 +243,7 @@ class _GachaDialogState extends State<GachaDialog>
     Colors.yellow,
     Colors.pink,
     Colors.orange,
-    Colors.purple
+    Colors.purple,
   ];
   Color _frontColor = Colors.red;
   Color _backColor = Colors.blue;
@@ -247,10 +260,7 @@ class _GachaDialogState extends State<GachaDialog>
       vsync: this,
       duration: const Duration(seconds: 4),
     );
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutCirc,
-    );
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeOutCirc);
     _controller.addListener(_onAnimationTick);
   }
 
@@ -304,13 +314,20 @@ class _GachaDialogState extends State<GachaDialog>
 
   Color _getColorFromName(String name) {
     switch (name) {
-      case 'Green': return Colors.green;
-      case 'Blue': return Colors.blue;
-      case 'Yellow': return Colors.yellow;
-      case 'Pink': return Colors.pink;
-      case 'Orange': return Colors.orange;
-      case 'Purple': return Colors.purple;
-      default: return Colors.grey;
+      case 'Green':
+        return Colors.green;
+      case 'Blue':
+        return Colors.blue;
+      case 'Yellow':
+        return Colors.yellow;
+      case 'Pink':
+        return Colors.pink;
+      case 'Orange':
+        return Colors.orange;
+      case 'Purple':
+        return Colors.purple;
+      default:
+        return Colors.grey;
     }
   }
 
@@ -349,26 +366,28 @@ class _GachaDialogState extends State<GachaDialog>
             const Text(
               "Click to roll",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  shadows: [BoxShadow(color: Colors.black, blurRadius: 10)]),
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                shadows: [BoxShadow(color: Colors.black, blurRadius: 10)],
+              ),
             ),
           if (_showResultText) ...[
             Text(
               "Unlocked $_resultName!",
               style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  shadows: [BoxShadow(color: Colors.black, blurRadius: 10)]),
+                color: Colors.white,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                shadows: [BoxShadow(color: Colors.black, blurRadius: 10)],
+              ),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
               child: const Text("OK"),
-            )
-          ]
+            ),
+          ],
         ],
       ),
     );
@@ -386,7 +405,7 @@ class _GachaDialogState extends State<GachaDialog>
       content = Transform(
         alignment: Alignment.center,
         transform: Matrix4.identity()..rotateY(pi),
-        child: const SizedBox.shrink(), 
+        child: const SizedBox.shrink(),
       );
     } else {
       // Front side
@@ -395,7 +414,7 @@ class _GachaDialogState extends State<GachaDialog>
         content = const Icon(Icons.check, color: Colors.white, size: 60);
       } else if (_isRolling) {
         // Spinning
-        content = const SizedBox.shrink(); 
+        content = const SizedBox.shrink();
       } else {
         // Idle
         content = const Icon(Icons.help_outline, color: Colors.white54, size: 60);
@@ -410,7 +429,7 @@ class _GachaDialogState extends State<GachaDialog>
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white, width: 4),
         boxShadow: const [
-          BoxShadow(color: Colors.black45, blurRadius: 15, spreadRadius: 2)
+          BoxShadow(color: Colors.black45, blurRadius: 15, spreadRadius: 2),
         ],
       ),
       alignment: Alignment.center,

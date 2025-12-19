@@ -26,7 +26,7 @@ class ThemeProvider extends ChangeNotifier {
       _materialColor = color;
       notifyListeners();
 
-      await _prefs.setInt('material_color_value', color.value);
+      await _prefs.setInt('material_color_value', color.toARGB32());
     }
   }
 

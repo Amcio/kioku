@@ -23,7 +23,7 @@ class DeckView extends StatelessWidget {
               itemBuilder: (context, index) {
                 final Deck deck = deckProvider.decks[index];
                 return ListTile(
-                  leading: const Icon(Icons.folder, size: 40, color: Colors.amber),
+                  leading: const Icon(Icons.auto_awesome_motion, size: 40),
                   title: Text(deck.name),
                   subtitle: Text(
                     "${deckProvider.cards.where((c) => c.deckId == deck.id).length} cards",
