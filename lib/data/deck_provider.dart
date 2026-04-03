@@ -82,10 +82,19 @@ class DeckProvider extends ChangeNotifier {
     await (database.into(database.reviews).insert(review));
   }
 
-  Future<List<Flashcard>> getSessionCards(
-    int deckId, {
-    int limit = 50, // Total session limit
-  }) async {
+  Future<List<Flashcard>> getDeckContents(int deckId) async {
+    return await (database.select(
+      database.flashcards,
+    )..where((tbl) => tbl.deckId.equals(deckId))).get();
+  }
+
+  Stream<List<Flashcard>> watchDeckContents(int deckId) {
+    return (database.select(
+      database.flashcards,
+    )..where((tbl) => tbl.deckId.equals(deckId))).watch();
+  }
+
+  Future<List<Flashcard>> getDueCardBatch(int deckId, {int limit = 15}) async {
     final now = DateTime.now();
 
     // Fetch ALL cards that are due right now (or in the past)
@@ -93,11 +102,8 @@ class DeckProvider extends ChangeNotifier {
     final dueCards =
         await (database.select(database.flashcards)
               ..where((tbl) => tbl.deckId.equals(deckId))
-              ..where(
-                (tbl) => tbl.nextReviewDate.isSmallerOrEqualValue(now),
-              ) // CHECK DUE DATE
+              ..where((tbl) => tbl.nextReviewDate.isSmallerOrEqualValue(now))
               ..orderBy([
-                // Prioritize most overdue cards first
                 (t) => OrderingTerm(
                   expression: t.nextReviewDate,
                   mode: OrderingMode.asc,

@@ -44,7 +44,7 @@ class _StudyScreenState extends State<StudyScreen>
   }
 
   Future<void> _loadSession() async {
-    final cards = await context.read<DeckProvider>().getSessionCards(widget.deckID);
+    final cards = await context.read<DeckProvider>().getDueCardBatch(widget.deckID);
     if (mounted) {
       setState(() {
         _sessionCards = cards;
