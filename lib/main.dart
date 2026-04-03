@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/util/legacy_to_async_migration_util.dart';
 
 import 'data/database.dart';
 import 'data/deck_provider.dart';
@@ -11,7 +12,16 @@ import 'ui/home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // makes sure plugins are initialized
   final database = AppDatabase();
-  final prefs = await SharedPreferences.getInstance();
+  final oldPrefs = await SharedPreferences.getInstance();
+  final SharedPreferencesWithCache prefs = await SharedPreferencesWithCache.create(
+    cacheOptions: const SharedPreferencesWithCacheOptions(),
+  );
+
+  await migrateLegacySharedPreferencesToSharedPreferencesAsyncIfNecessary(
+    legacySharedPreferencesInstance: oldPrefs,
+    sharedPreferencesAsyncOptions: const SharedPreferencesOptions(),
+    migrationCompletedKey: 'migrationCompleted',
+  );
   runApp(
     MultiProvider(
       providers: [

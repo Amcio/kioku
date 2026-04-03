@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   Color _materialColor = Colors.red;
-  late final SharedPreferences _prefs;
+  late final SharedPreferencesWithCache _prefs;
 
   ThemeMode get themeMode => _themeMode;
   Color get materialColor => _materialColor;
@@ -25,7 +25,6 @@ class ThemeProvider extends ChangeNotifier {
     if (_materialColor != color) {
       _materialColor = color;
       notifyListeners();
-
       await _prefs.setInt('material_color_value', color.toARGB32());
     }
   }
