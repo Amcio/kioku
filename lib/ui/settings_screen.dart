@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kioku/data/study_settings_provider.dart';
 import 'package:provider/provider.dart';
 import '../data/theme_provider.dart';
 import '../data/quest_provider.dart';
@@ -20,6 +21,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     final questProvider = context.watch<QuestProvider>();
+    final studySettingsProvider = context.watch<StudySettingsProvider>();
 
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
@@ -33,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
-          
+
           // Theme Mode Selector (Using RadioGroup)
           RadioGroup<ThemeMode>(
             groupValue: themeProvider.themeMode,
@@ -65,30 +67,31 @@ class SettingsScreen extends StatelessWidget {
 
           // --- Banner Color Section ---
           const Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
             child: Text(
-              "Deck Banner Color", 
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+              "Deck Banner Color",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Wrap(
               spacing: 16,
               runSpacing: 16,
               children: allColors.entries.map((entry) {
                 final colorName = entry.key;
                 final color = entry.value;
-                
+
                 // Check if color is unlocked via QuestProvider
                 final isUnlocked = questProvider.isColorUnlocked(colorName);
-                
+
                 // Check if this is the currently selected color
-                final isSelected = themeProvider.materialColor.value == color.value;
+                final isSelected =
+                    themeProvider.materialColor.toARGB32() == color.toARGB32();
 
                 return GestureDetector(
-                  onTap: isUnlocked 
-                      ? () => themeProvider.setCustomColor(color) 
+                  onTap: isUnlocked
+                      ? () => themeProvider.setCustomColor(color)
                       : null, // Disable tap if locked
                   child: Stack(
                     alignment: Alignment.center,
@@ -98,23 +101,23 @@ class SettingsScreen extends StatelessWidget {
                         height: 60,
                         decoration: BoxDecoration(
                           color: color,
-                          border: isSelected 
-                              ? Border.all(color: Colors.black, width: 4) 
+                          border: isSelected
+                              ? Border.all(color: Colors.black, width: 4)
                               : null,
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: [
-                            if (isSelected) 
-                              const BoxShadow(color: Colors.black26, blurRadius: 8)
+                            if (isSelected)
+                              const BoxShadow(color: Colors.black26, blurRadius: 8),
                           ],
                         ),
                         // Dim the color slightly if it's locked
-                        child: !isUnlocked 
+                        child: !isUnlocked
                             ? Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.4),
+                                  color: Colors.black.withValues(alpha: 0.4),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                              ) 
+                              )
                             : null,
                       ),
                       // Lock Icon
@@ -130,6 +133,44 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
 
+          // Study Screen Settings
+          const Divider(),
+
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
+            child: Text(
+              "Study Settings",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SwitchListTile(
+                  title: const Text("Write Mode"),
+                  subtitle: const Text(
+                    "EXPERIMENTAL: Write what's on the back of the card",
+                  ),
+                  value: studySettingsProvider.writeMode,
+                  onChanged: (bool value) {
+                    studySettingsProvider.setWriteMode(value);
+                  },
+                  secondary: const Icon(Icons.edit),
+                ),
+                SwitchListTile(
+                  title: const Text("Flip Cards"),
+                  subtitle: const Text("Treat backs of flashcards as their fronts."),
+                  value: studySettingsProvider.flipAllCards,
+                  onChanged: (bool value) {
+                    studySettingsProvider.setFlipCards(value);
+                  },
+                  secondary: const Icon(Icons.flip),
+                ),
+              ],
+            ),
+          ),
           // ------------ DEBUG BUTTONS ------------
           const Divider(),
           // Add money
@@ -138,9 +179,9 @@ class SettingsScreen extends StatelessWidget {
             title: const Text("Debug: Add 1000 G"),
             onTap: () {
               context.read<QuestProvider>().debugAddCurrency(1000);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Added 1000 G")),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text("Added 1000 G")));
             },
           ),
 
@@ -155,7 +196,8 @@ class SettingsScreen extends StatelessWidget {
                 builder: (context) => AlertDialog(
                   title: const Text("Factory Reset?"),
                   content: const Text(
-                      "Delete all decks, cards, and shop progress. This cannot be undone."),
+                    "Delete all decks, cards, and shop progress. This cannot be undone.",
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
@@ -171,19 +213,19 @@ class SettingsScreen extends StatelessWidget {
               );
 
               if (confirmed == true && context.mounted) {
-                 await context.read<QuestProvider>().database.clearAllData();
+                await context.read<QuestProvider>().database.clearAllData();
 
-                 if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("App Reset Complete")),
-                    );
-                    // Force the Theme/Colors to reset visually if needed
-                    context.read<ThemeProvider>().setCustomColor(Colors.red);
-                 }
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("App Reset Complete")),
+                  );
+                  // Force the Theme/Colors to reset visually if needed
+                  context.read<ThemeProvider>().setCustomColor(Colors.red);
+                }
               }
             },
           ),
-          
+
           const SizedBox(height: 50),
         ],
       ),

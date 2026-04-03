@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kioku/data/study_settings_provider.dart';
+import 'package:kioku/ui/write_study_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../data/database.dart';
@@ -65,7 +67,13 @@ class _DeckDetailScreenState extends State<DeckDetailScreen> {
                     if (deckCards.isNotEmpty) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => StudyScreen(deckID: widget.deck.id),
+                          builder: (context) {
+                            if (context.read<StudySettingsProvider>().writeMode) {
+                              return WriteStudyScreen(deckId: widget.deck.id);
+                            } else {
+                              return StudyScreen(deckID: widget.deck.id);
+                            }
+                          },
                         ),
                       );
                     } else {
@@ -186,7 +194,6 @@ class _DeckDetailScreenState extends State<DeckDetailScreen> {
               ],
             ),
             const SizedBox(height: 8),
-            // The single "Next Review" line you requested
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:fsrs/fsrs.dart' as fsrs;
 import 'package:provider/provider.dart';
 
-import '../adapter/fsrs_adapter.dart';
 import '../data/database.dart';
 import '../data/deck_provider.dart';
 import '../data/quest_provider.dart';
+import 'study_widgets.dart';
 
 class StudyScreen extends StatefulWidget {
   final int deckID;
@@ -76,25 +76,6 @@ class _StudyScreenState extends State<StudyScreen>
     }
   }
 
-  String _getNextInterval(Flashcard card, fsrs.Rating rating) {
-    try {
-      final fsrsCard = card.toFsrsCard();
-      final scheduler = fsrs.Scheduler();
-      final schedulingInfo = scheduler.reviewCard(fsrsCard, rating);
-      final nextDue = schedulingInfo.card.due;
-      final diff = nextDue.difference(DateTime.now());
-
-      if (diff.inSeconds < 60) return "<1m";
-      if (diff.inMinutes < 60) return "${diff.inMinutes}m";
-      if (diff.inHours < 24) return "${diff.inHours}h";
-      if (diff.inDays < 30) return "${diff.inDays}d";
-      if (diff.inDays < 365) return "${(diff.inDays / 30).floor()}mo";
-      return "${(diff.inDays / 365).floor()}y";
-    } catch (e) {
-      return "-";
-    }
-  }
-
   Widget animatedCard(BuildContext context, List<Flashcard> cards) {
     final activeCard = cards[_currentIndex];
     return GestureDetector(
@@ -127,38 +108,6 @@ class _StudyScreenState extends State<StudyScreen>
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBtn(String text, Color color, fsrs.Rating rating, Flashcard card) {
-    final interval = _getNextInterval(card, rating);
-
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      ),
-      onPressed: () {
-        var now = DateTime.now().toUtc();
-        if (card.lastReviewDate == null ||
-            card.lastReviewDate!.compareTo(DateTime(now.year, now.month, now.day)) ==
-                -1) {
-          context.read<QuestProvider>().incrementLearnedCards();
-        }
-
-        context.read<DeckProvider>().processReview(card, rating);
-        _nextCard();
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text(
-            interval,
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.normal),
-          ),
-        ],
       ),
     );
   }
@@ -205,46 +154,19 @@ class _StudyScreenState extends State<StudyScreen>
                 animation: _controller,
                 builder: (context, child) => animatedCard(context, _sessionCards),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: _buildBtn(
-                      "Again",
-                      Colors.red,
-                      fsrs.Rating.again,
-                      activeCard,
-                    ),
-                  ),
-                  const SizedBox(width: 8), // Add spacing between buttons
-                  Expanded(
-                    child: _buildBtn(
-                      "Hard",
-                      Colors.orange,
-                      fsrs.Rating.hard,
-                      activeCard,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: _buildBtn(
-                      "Good",
-                      Colors.blue,
-                      fsrs.Rating.good,
-                      activeCard,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: _buildBtn(
-                      "Easy",
-                      Colors.green,
-                      fsrs.Rating.easy,
-                      activeCard,
-                    ),
-                  ),
-                ],
-              ),
+              createReviewOpinionButtons(activeCard, (fsrs.Rating rating) {
+                var now = DateTime.now().toUtc();
+                if (activeCard.lastReviewDate == null ||
+                    activeCard.lastReviewDate!.compareTo(
+                          DateTime(now.year, now.month, now.day),
+                        ) ==
+                        -1) {
+                  context.read<QuestProvider>().incrementLearnedCards();
+                }
+
+                context.read<DeckProvider>().processReview(activeCard, rating);
+                _nextCard();
+              }),
             ],
           ),
         ),

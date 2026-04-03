@@ -6,6 +6,7 @@ import 'package:shared_preferences/util/legacy_to_async_migration_util.dart';
 import 'data/database.dart';
 import 'data/deck_provider.dart';
 import 'data/quest_provider.dart';
+import 'data/study_settings_provider.dart';
 import 'data/theme_provider.dart';
 import 'ui/home_screen.dart';
 
@@ -28,6 +29,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => DeckProvider(database)),
         ChangeNotifierProvider(create: (_) => QuestProvider(database)),
         ChangeNotifierProvider(create: (_) => ThemeProvider(prefs)),
+        ChangeNotifierProvider(create: (_) => StudySettingsProvider(prefs)),
       ],
       child: const KiokuApp(),
     ),
@@ -40,9 +42,14 @@ class KiokuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeMode = context.watch<ThemeProvider>().themeMode;
+    final accentColour = context.watch<ThemeProvider>().materialColor;
     return MaterialApp(
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData.light().copyWith(
+        colorScheme: ThemeData.light().colorScheme.copyWith(secondary: accentColour),
+      ),
+      darkTheme: ThemeData.dark().copyWith(
+        colorScheme: ThemeData.dark().colorScheme.copyWith(secondary: accentColour),
+      ),
       themeMode: themeMode,
       home: HomeScreen(),
     );
